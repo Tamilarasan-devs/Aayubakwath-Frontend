@@ -36,6 +36,7 @@ const PageLoader = () => (
 const Home = lazy(() => import("../pages/Home"));
 const LoginPage = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
+const ForgotPassword = lazy(() => import("../pages/ForgotPassword"));
 const ContactPage = lazy(() => import("../pages/ContactPage"));
 const BlogPage = lazy(() => import("../pages/Blog"));
 const BlogDetail = lazy(() => import("../pages/BlogDetail"));
@@ -91,6 +92,7 @@ export default function AppRoutes() {
                 <Route path="/banner" element={<Banner />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:slug" element={<BlogDetail />} />

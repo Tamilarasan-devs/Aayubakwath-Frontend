@@ -2,10 +2,15 @@ import { motion } from "framer-motion";
 
 export default function ProductStickyBar({
   pack,
+  product,
   handleAddToCart,
   handleBuyNow,
   addMut,
 }) {
+
+  const price = pack?.price ?? parseFloat(product?.finalPrice || 0);
+  const orig = pack?.orig ?? parseFloat(product?.price || 0);
+
   return (
     <motion.div
       initial={{ y: 100 }}
@@ -16,11 +21,11 @@ export default function ProductStickyBar({
       <div className="flex items-center gap-2.5 p-3">
         <div className="flex-1">
           <span className="text-lg tracking-tight font-semibold">
-            ₹{pack.price?.toLocaleString()}
+            ₹{price.toLocaleString()}
           </span>
-          {pack.orig && (
+          {orig > price && (
             <span className="text-xs text-[var(--color-text-placeholder)] line-through ml-2">
-              ₹{pack.orig.toLocaleString()}
+              ₹{orig.toLocaleString()}
             </span>
           )}
         </div>

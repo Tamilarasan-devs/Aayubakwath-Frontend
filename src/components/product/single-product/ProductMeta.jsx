@@ -76,11 +76,6 @@ export default function ProductMeta({
     <>
       {/* Meta tags */}
       <div className="flex items-center gap-2 mb-4 flex-wrap">
-        {forWhomLabel && (
-          <span className="text-xs tracking-[0.25em] uppercase text-[var(--color-text-muted)] font-semibold bg-[var(--color-bg-soft)] px-2.5 py-1 rounded-full border border-[var(--color-border)]">
-            {forWhomLabel}
-          </span>
-        )}
         {visibleTags.map((tag, i) => (
           <span
             key={i}

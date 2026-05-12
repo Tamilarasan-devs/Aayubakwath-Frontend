@@ -453,15 +453,7 @@ const buildPacks = (product) => {
   const fp = parseFloat(product?.finalPrice || 0);
   const op = parseFloat(product?.price || 0);
   return [
-    {
-      qty: 30,
-      price: Math.round(fp * 0.75),
-      orig: Math.round(op * 0.75),
-      perUnit: (fp * 0.75) / 30,
-      tag: null,
-      duration: "1 Month",
-      desc: "Starter pack",
-    },
+
     {
       qty: 60,
       price: Math.round(fp * 1.35),
@@ -471,15 +463,7 @@ const buildPacks = (product) => {
       duration: "2 Months",
       desc: "Most savings",
     },
-    {
-      qty: 90,
-      price: Math.round(fp * 1.9),
-      orig: Math.round(op * 1.9),
-      perUnit: (fp * 1.9) / 90,
-      tag: "Most Popular",
-      duration: "3 Months",
-      desc: "Best results",
-    },
+
   ];
 };
 
@@ -1032,6 +1016,7 @@ export default function SingleProduct() {
          ═══════════════════════════════════════════════════════════ */}
       <ProductStickyBar
         pack={pack}
+        product={product}
         handleAddToCart={handleAddToCart}
         handleBuyNow={handleBuyNow}
         addMut={addMut}

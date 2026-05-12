@@ -18,3 +18,18 @@ export const registerUser = async (userData) => {
   const { data } = await axiosInstance.post('/auth/register', userData)
   return extractTokens(data)
 }
+
+export const forgotPassword = async (email) => {
+  const { data } = await axiosInstance.post('/auth/forgot-password', { email })
+  return data.data
+}
+
+export const verifyResetOtp = async ({ userId, otp }) => {
+  const { data } = await axiosInstance.post('/auth/verify-reset-otp', { userId, otp })
+  return data.data
+}
+
+export const resetPassword = async ({ userId, otp, password }) => {
+  const { data } = await axiosInstance.post('/auth/reset-password', { userId, otp, password })
+  return data.data
+}
