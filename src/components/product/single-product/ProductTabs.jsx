@@ -71,6 +71,7 @@ export default function ProductTabs({
   TABS,
   fadeInUp,
   product,
+  productContent,
   activeImageUrl,
   benefits,
   warnings,
@@ -104,7 +105,11 @@ export default function ProductTabs({
     generalHealth: "General Health",
   }[key] || product?.productName;
 
-  const displayImage = PRODUCT_BENEFITS_DATA[canonicalName]?.image || activeImageUrl;
+  // CMS-uploaded benefits image overrides the static hardcoded one
+  const displayImage =
+    productContent?.benefitsImage ||
+    PRODUCT_BENEFITS_DATA[canonicalName]?.image ||
+    activeImageUrl;
 
   const howToUseImageByProductName = {
     "Blood Cholesterol Balance": howToCholesterol,
@@ -120,7 +125,9 @@ export default function ProductTabs({
     vitality: howToVitality,
     generalHealth: howToGeneralHealth,
   };
+  // CMS-uploaded how-to-use image overrides static
   const howToUseImage =
+    productContent?.howToUseImage ||
     howToUseImageByProductName[canonicalName] ||
     howToUseImageByKey[key] ||
     null;
@@ -417,7 +424,7 @@ export default function ProductTabs({
               )}
             </AnimatePresence>
 
-            {/* Warnings */}
+            {/* Warnings / Important */}
             {activeTab === "warning" && (
               <div className="w-full">
                 <div className="mb-10 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-soft)] px-6 py-7 md:px-8 md:py-8">
@@ -428,12 +435,6 @@ export default function ProductTabs({
         >
          Important Information
         </h2>
-                  {/* <div className="mt-5 flex items-center gap-3 rounded-xl border border-[var(--color-error-bg)] bg-[var(--color-error-bg)]/70 px-4 py-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-100">
-                      <AlertTriangle size={18} className="text-[var(--color-warn)]" />
-                    </div>
-
-                  </div> */}
 
                     <p className="text-center text-[20px] font-semibold leading-relaxed text-[var(--color-text)]">
                        This product is not intended to diagnose, treat, cure, or prevent any disease.
@@ -444,7 +445,6 @@ export default function ProductTabs({
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                   {warnings.map((row, idx) => {
                     const Icon = pickWarningIcon(row, idx);
-
                     return (
                       <motion.div
                         key={idx}
@@ -457,28 +457,36 @@ export default function ProductTabs({
                       <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl bg-gradient-to-r from-[var(--color-sage)] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
                       <div className="mx-auto mb-6 flex h-[108px] w-[108px] items-center justify-center overflow-hidden rounded-[26px] bg-[var(--color-bg-soft)]">
-                        <motion.div
-                          className="flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(130,155,28,0.22),transparent_55%),linear-gradient(135deg,rgba(8,15,12,0.06),rgba(130,155,28,0.12))]"
-                          animate={{ scale: [1, 1.02, 1] }}
-                          transition={{
-                            duration: 2.4,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                          }}
-                        >
+                        {row.image ? (
+                          <img
+                            src={row.image}
+                            alt={row.key}
+                            className="h-full w-full object-cover rounded-[26px]"
+                          />
+                        ) : (
                           <motion.div
-                            className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-sage-light)] text-[var(--color-sage)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:bg-[var(--color-sage)] group-hover:text-white"
-                            animate={{ y: [0, -2, 0] }}
+                            className="flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(130,155,28,0.22),transparent_55%),linear-gradient(135deg,rgba(8,15,12,0.06),rgba(130,155,28,0.12))]"
+                            animate={{ scale: [1, 1.02, 1] }}
                             transition={{
-                              duration: 1.8,
+                              duration: 2.4,
                               repeat: Infinity,
                               ease: "easeInOut",
-                              delay: idx * 0.05,
                             }}
                           >
-                            <Icon size={26} />
+                            <motion.div
+                              className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-sage-light)] text-[var(--color-sage)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:bg-[var(--color-sage)] group-hover:text-white"
+                              animate={{ y: [0, -2, 0] }}
+                              transition={{
+                                duration: 1.8,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: idx * 0.05,
+                              }}
+                            >
+                              <Icon size={26} />
+                            </motion.div>
                           </motion.div>
-                        </motion.div>
+                        )}
                       </div>
 
                       <h4 className="mb-2 text-[18px] font-semibold text-[var(--color-text)] transition-colors duration-500 group-hover:text-[var(--color-sage)]">

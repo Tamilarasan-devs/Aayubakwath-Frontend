@@ -1,5 +1,8 @@
+import Papa from "papaparse";
+import { Plus, ChevronDown, ChevronUp, User, Phone, Home, MapPin, Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import { Plus, ChevronDown, ChevronUp, User, Phone, Home, MapPin } from "lucide-react";
+// Cache for pincode data to avoid re-parsing
+let pincodeDataCache = null;
 
 export default function NewAddressForm({
   onSave,
@@ -8,6 +11,7 @@ export default function NewAddressForm({
   initialData = null,
 }) {
   const [isExpanded, setIsExpanded] = useState(!hasAddresses || !!initialData);
+  const [isLoadingPincode, setIsLoadingPincode] = useState(false);
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
     phone: initialData?.phone || "",
@@ -20,8 +24,66 @@ export default function NewAddressForm({
     addressType: initialData?.addressType || "Home",
   });
 
+  const handlePincodeLookup = async (pincode) => {
+    try {
+      setIsLoadingPincode(true);
+      
+      if (!pincodeDataCache) {
+        await new Promise((resolve, reject) => {
+          Papa.parse("/pincode.csv", {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+              const lookup = {};
+              results.data.forEach((row) => {
+                if (row.Pincode) {
+                  // Some pincodes might have multiple entries (different offices)
+                  // We take the first one or prioritize certain office types if needed
+                  if (!lookup[row.Pincode]) {
+                    lookup[row.Pincode] = {
+                      city: row.District,
+                      state: row.StateName,
+                    };
+                  }
+                }
+              });
+              pincodeDataCache = lookup;
+              resolve();
+            },
+            error: (err) => reject(err),
+          });
+        });
+      }
+
+      const match = pincodeDataCache[pincode];
+      if (match) {
+        setFormData((prev) => ({
+          ...prev,
+          city: match.city || prev.city,
+          state: match.state || prev.state,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching pincode data:", error);
+    } finally {
+      setIsLoadingPincode(false);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // Auto-fetch city/state when pincode reaches 6 digits
+    if (name === "postalCode") {
+      const sanitizedValue = value.replace(/\D/g, "").slice(0, 6);
+      setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
+      if (sanitizedValue.length === 6) {
+        handlePincodeLookup(sanitizedValue);
+      }
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -190,15 +252,22 @@ export default function NewAddressForm({
               <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5 ml-1">
                 Pincode *
               </label>
-              <input
-                type="text"
-                name="postalCode"
-                value={formData.postalCode}
-                onChange={handleChange}
-                placeholder="6-digit PIN"
-                maxLength={6}
-                className="w-full px-4 py-3 border border-[var(--color-border)] bg-white rounded-[var(--radius-md)] font-body text-sm focus:border-[var(--color-sage)] focus:ring-1 focus:ring-[var(--color-sage)] outline-none transition-all shadow-sm"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  name="postalCode"
+                  value={formData.postalCode}
+                  onChange={handleChange}
+                  placeholder="6-digit PIN"
+                  maxLength={6}
+                  className="w-full px-4 py-3 border border-[var(--color-border)] bg-white rounded-[var(--radius-md)] font-body text-sm focus:border-[var(--color-sage)] focus:ring-1 focus:ring-[var(--color-sage)] outline-none transition-all shadow-sm pr-10"
+                />
+                {isLoadingPincode && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    <Loader2 size={16} className="animate-spin text-[var(--color-sage)]" />
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="relative">

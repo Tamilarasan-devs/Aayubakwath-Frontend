@@ -6,10 +6,7 @@ import {
   Heart, 
   Power,
   ChevronRight,
-  CreditCard,
-  Bell,
-  MessageSquare,
-  Gift
+  Tag
 } from "lucide-react";
 
 export default function ProfileSidebar({ activeTab, setActiveTab, user, onLogout }) {
@@ -30,7 +27,8 @@ export default function ProfileSidebar({ activeTab, setActiveTab, user, onLogout
     {
       title: "My Stuff",
       items: [
-        { id: "Wishlist", label: "My Wishlist", icon: Heart }
+        { id: "Wishlist", label: "My Wishlist", icon: Heart },
+        { id: "Coupons", label: "Offers & Coupons", icon: Tag },
       ]
     }
   ];

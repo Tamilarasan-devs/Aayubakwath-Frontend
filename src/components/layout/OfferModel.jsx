@@ -1,17 +1,25 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import popupImage from "../../assets/images/popup.png";
+import { getPublicCoupons } from "../../services/couponService";
 
 export default function OfferModal() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const couponCode = "HURRY26";
+  const { data: coupons = [] } = useQuery({
+    queryKey: ["publicCoupons"],
+    queryFn: getPublicCoupons,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  // Pick the first active coupon, fall back to nothing
+  const activeCoupon = coupons[0] || null;
 
   useEffect(() => {
     const seen = localStorage.getItem("offerSeen");
-
     if (!seen) {
       setTimeout(() => {
         setShow(true);
@@ -25,8 +33,9 @@ export default function OfferModal() {
   };
 
   const copyCoupon = async () => {
+    if (!activeCoupon) return;
     try {
-      await navigator.clipboard.writeText(couponCode);
+      await navigator.clipboard.writeText(activeCoupon.code);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -34,7 +43,14 @@ export default function OfferModal() {
     }
   };
 
-  if (!show) return null;
+  const formatDiscount = (coupon) => {
+    if (!coupon) return "";
+    return coupon.discountType === "PERCENT"
+      ? `${coupon.discountValue}% OFF`
+      : `₹${coupon.discountValue} OFF`;
+  };
+
+  if (!show || !activeCoupon) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
@@ -65,28 +81,31 @@ export default function OfferModal() {
           </span>
 
           <p className="text-lg md:text-2xl font-semibold text-[#3f5f12] mb-2">
-            For Hot Summer Days
+            {activeCoupon.description || "For Hot Summer Days"}
           </p>
 
           <h2 className="text-5xl md:text-8xl font-extrabold leading-none text-[#183b07] drop-shadow-sm mb-4">
-            20% OFF
+            {formatDiscount(activeCoupon)}
           </h2>
 
           <p className="text-base md:text-xl font-medium text-slate-700 mb-6 max-w-2xl">
             Flat discount on premium herbal wellness supplements for a limited time only.
+            {activeCoupon.minOrderAmount
+              ? ` Min. order ₹${Number(activeCoupon.minOrderAmount).toFixed(0)}.`
+              : ""}
           </p>
 
           {/* Coupon Section */}
           <div className="flex flex-col sm:flex-row items-center gap-4 mb-8">
             <div className="px-8 py-4 rounded-2xl border-2 border-dashed border-black bg-white/90 text-2xl font-bold tracking-widest shadow-sm">
-              {couponCode}
+              {activeCoupon.code}
             </div>
 
             <button
               onClick={copyCoupon}
               className="px-6 py-4 rounded-2xl bg-white border border-[#d7e7b6] font-semibold hover:bg-[#f4f8e8] transition"
             >
-              {copied ? "Copied" : "Copy Code"}
+              {copied ? "✓ Copied!" : "Copy Code"}
             </button>
           </div>
 

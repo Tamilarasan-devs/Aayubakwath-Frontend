@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getProfile, addAddress, removeAddress, updateAddress, updateUserProfile } from "../services/userService";
 import { getMyOrders } from "../services/orderService";
@@ -9,6 +9,7 @@ import ProfileInfo from "./profile/ProfileInfo";
 import OrderHistory from "./profile/OrderHistory";
 import ProfileWishlist from "./profile/ProfileWishlist";
 import AddressBook from "./profile/AddressBook";
+import ProfileCoupons from "./profile/ProfileCoupons";
 
 import { getWishlist, removeFromWishlist } from "../services/wishlistService";
 
@@ -17,8 +18,19 @@ import ProfileSidebar from "./profile/ProfileSidebar";
 export default function ProfilePage() {
   const { logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const qc = useQueryClient();
-  const [activeTab, setActiveTab] = useState("Overview");
+
+  // Support pre-selecting a tab via router state (e.g. from FirstBanner "Claim Offer")
+  // or via ?tab= query param (e.g. from login redirect)
+  const initialTab = (() => {
+    if (location.state?.tab) return location.state.tab;
+    const params = new URLSearchParams(location.search);
+    const t = params.get("tab");
+    return t || "Overview";
+  })();
+
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -149,6 +161,7 @@ export default function ProfilePage() {
                   {activeTab === "Orders" && "My Orders"}
                   {activeTab === "Wishlist" && `My Wishlist (${wishlist.length})`}
                   {activeTab === "Addresses" && "Manage Addresses"}
+                  {activeTab === "Coupons" && "Offers & Coupons"}
                 </h1>
                 <div className="h-0.5 w-12 bg-[var(--color-sage)] rounded-full" />
               </div>
@@ -185,6 +198,8 @@ export default function ProfilePage() {
                   editingAddress={editingAddress}
                 />
               )}
+
+              {activeTab === "Coupons" && <ProfileCoupons />}
             </div>
           </div>
         </div>

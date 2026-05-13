@@ -288,8 +288,8 @@ const normalizeBenefits = (value) => {
       const looksTooGeneric =
         badTokens.has(lowerTitle) ||
         badTokens.has(lowerDesc) ||
-        lowerDesc.length <= 8 ||
-        (lowerTitle.length <= 3 && lowerDesc.length <= 14);
+        // Only drop if the description is a raw placeholder word, not short CMS text
+        (lowerTitle.length <= 3 && lowerDesc.length <= 3);
 
       if (!title || !desc || looksLikeHeader || looksTooGeneric) return null;
 
@@ -301,9 +301,7 @@ const normalizeBenefits = (value) => {
     })
     .filter(Boolean);
 
-  // If the payload is too small or looks suspicious, fall back to defaults.
-  if (cleaned.length < 3) return [];
-
+  // Return whatever the CMS gave us — no artificial minimum.
   return cleaned;
 };
 
@@ -320,7 +318,7 @@ const normalizeWarnings = (value) => {
         const [maybeTitle, ...rest] = s.split(":");
         const title = (maybeTitle || "").trim();
         const desc = rest.join(":").trim() || s;
-        if (!title || !desc) return null;
+        if (!title) return null;
         return { key: title, val: desc };
       }
       if (typeof item !== "object") return null;
@@ -330,21 +328,14 @@ const normalizeWarnings = (value) => {
         item.val ?? item.value ?? item.desc ?? item.description ?? item.body;
       const title = String(titleCandidate || "").trim();
       const desc = String(descCandidate || "").trim();
-      if (!title || !desc) return null;
+      if (!title) return null;
 
       const lowerTitle = title.toLowerCase();
       const lowerDesc = desc.toLowerCase();
+      // Only drop actual header placeholder rows
       const looksLikeHeader =
-        (lowerTitle === "key" ||
-          lowerTitle === "val" ||
-          lowerTitle === "value" ||
-          lowerTitle === "desc" ||
-          lowerTitle === "description") &&
-        (lowerDesc === "val" ||
-          lowerDesc === "value" ||
-          lowerDesc === "desc" ||
-          lowerDesc === "description" ||
-          lowerDesc.length <= 4);
+        lowerTitle === "key" &&
+        (lowerDesc === "val" || lowerDesc === "value" || lowerDesc.length <= 3);
 
       if (looksLikeHeader) return null;
       return { key: title, val: desc };
@@ -471,7 +462,7 @@ const TABS = [
   { id: "description", label: "Benefits", Icon: Info },
   { id: "howToUse", label: "How To Use", Icon: BookOpen },
   { id: "ingredients", label: "Ingredients", Icon: Leaf },
-  { id: "warning", label: "Importants", Icon: Info },
+  { id: "warning", label: "Guidance", Icon: Info },
 
 ];
 
@@ -618,10 +609,25 @@ export default function SingleProduct() {
       ];
 
   const staticIngredients = PRODUCT_INGREDIENTS_DATA[canonicalProductName] || [];
-  const ingredients =
-    productContent?.ingredients?.list?.length > 0
-      ? productContent.ingredients
-      : {
+
+  // Use CMS ingredients if ANY sub-field (list, pills, or details) is populated
+  const hasCmsIngredients =
+    productContent?.ingredients?.list?.length > 0 ||
+    productContent?.ingredients?.details?.length > 0 ||
+    productContent?.ingredients?.pills?.length > 0;
+
+  const ingredients = hasCmsIngredients
+    ? {
+        list: productContent.ingredients?.list || [],
+        pills: productContent.ingredients?.pills || [],
+        details: productContent.ingredients?.details || [],
+        raw: (productContent.ingredients?.details || []).map((d) => ({
+          name: d.name || "",
+          desc: d.desc || "",
+          image: d.image || "",
+        })),
+      }
+    : {
         list: [],
         pills: staticIngredients.map((i) => i.name),
         details: staticIngredients.map((i) => `${i.name}: ${i.desc}`),
@@ -696,18 +702,20 @@ export default function SingleProduct() {
       ? ingredients.raw.map((item, index) => ({
         name: item.name,
         desc: item.desc,
+        // CMS-uploaded image takes priority; fall back to static asset
         img:
-          INGREDIENT_CARD_IMAGES[index] ||
           item.image ||
+          INGREDIENT_CARD_IMAGES[index] ||
           INGREDIENT_CARD_IMAGES[index % INGREDIENT_CARD_IMAGES.length],
         index,
       }))
       : (ingredients.details || []).map((item, index) => {
-        const name = item.name || item.split?.(": ")?.[0];
-        const desc = item.desc || item.split?.(": ")?.[1];
+        const name = typeof item === "string" ? item.split?.(":")[0]?.trim() : (item.name || "");
+        const desc = typeof item === "string" ? item.split?.(":").slice(1).join(":").trim() : (item.desc || "");
+        // CMS-uploaded image takes priority; fall back to static asset
         const img =
+          (typeof item === "object" ? item.image : null) ||
           INGREDIENT_CARD_IMAGES[index] ||
-          item.image ||
           INGREDIENT_CARD_IMAGES[index % INGREDIENT_CARD_IMAGES.length];
 
         return { name, desc, img, index };
@@ -929,6 +937,7 @@ export default function SingleProduct() {
         TABS={TABS}
         fadeInUp={fadeInUp}
         product={product}
+        productContent={productContent}
         activeImageUrl={activeImageUrl}
         benefits={benefits}
         warnings={warnings}

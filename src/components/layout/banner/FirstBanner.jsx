@@ -2,11 +2,42 @@ import React from "react";
 import promoBg from "../../../assets/images/luxury_promo_bg.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import { getPublicCoupons } from "../../../services/couponService";
 
 export default function FirstBanner() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const couponCode = "WELCOME30";
+
+  const { data: coupons = [] } = useQuery({
+    queryKey: ["publicCoupons"],
+    queryFn: getPublicCoupons,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  // Pick first active coupon; fall back to a placeholder while loading
+  const activeCoupon = coupons[0] || null;
+  const couponCode = activeCoupon?.code ?? "—";
+
+  const discountLabel =
+    activeCoupon?.discountType === "PERCENT"
+      ? `Save ${activeCoupon.discountValue}% On Your First Order`
+      : activeCoupon?.discountValue
+      ? `Save ₹${Number(activeCoupon.discountValue).toFixed(0)} On Your First Order`
+      : "Save On Your First Order";
+
+  const handleClaimOffer = (e) => {
+    e.stopPropagation();
+
+    // If not logged in → go to login, then redirect back to profile coupons
+    if (!isAuthenticated) {
+      navigate(`/login?redirect=${encodeURIComponent("/profile?tab=Coupons")}`);
+      return;
+    }
+
+    // Navigate to profile with Coupons tab pre-selected via router state
+    navigate("/profile", { state: { tab: "Coupons" } });
+  };
 
   return (
     <div
@@ -28,7 +59,7 @@ export default function FirstBanner() {
             Welcome to Aayubakwath
           </h2>
           <p className="text-lg text-[var(--color-text)] font-semibold uppercase tracking-[0.12em] mb-3 font-body">
-            Save 30% On Your First Order
+            {discountLabel}
           </p>
           <p className="text-[var(--color-text-secondary)] font-medium text-[15px] font-body">
             Use code{" "}
@@ -41,17 +72,7 @@ export default function FirstBanner() {
 
         <button
           type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            localStorage.setItem("applied_coupon_code", couponCode);
-
-            const target = `/cart?coupon=${encodeURIComponent(couponCode)}`;
-            if (!isAuthenticated) {
-              navigate(`/login?redirect=${encodeURIComponent(target)}`);
-              return;
-            }
-            navigate(target);
-          }}
+          onClick={handleClaimOffer}
           className="btn-solid flex-shrink-0 px-8 py-4 text-[12px] tracking-[0.1em] uppercase shadow-[var(--shadow-lg)]
             group-hover:-translate-y-1 group-hover:shadow-[var(--shadow-xl)] transition-all duration-300"
         >

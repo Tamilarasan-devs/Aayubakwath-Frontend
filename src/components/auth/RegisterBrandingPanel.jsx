@@ -23,7 +23,7 @@ export default function RegisterBrandingPanel() {
               Aayubakwath
             </p>
             <p className="font-body text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--color-sage-dark)]">
-              Ayurvedic Wellness
+              Herbal Wellness
             </p>
           </div>
         </div>
@@ -36,9 +36,9 @@ export default function RegisterBrandingPanel() {
             </span>
           </div>
           <h2 className="mb-3 font-display text-[clamp(1.85rem,2.8vw,2.45rem)] font-semibold leading-[1.05] tracking-tight text-[#111827]">
-            Start with
+            Begin Your with
             <br />
-            <span className="text-[#111827]/80">clean wellness.</span>
+            <span className="text-[#111827]/80">wellness Journey.</span>
           </h2>
           <p className="max-w-[320px] font-body text-[15px] font-medium leading-relaxed text-[#111827]/80">
             Create your profile for faster checkout, order updates, and

@@ -438,7 +438,7 @@ export default function NewAbout() {
                 delay={0.05}
                 className="min-w-0 max-w-full"
               >
-                <div className="group relative aspect-[4/3] w-full max-w-full overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-[var(--color-sage)] hover:shadow-2xl hover:shadow-[rgba(130,155,28,0.12)] custom-img-outer">
+                <div className="group relative aspect-[4/3] w-full max-w-full overflow-hidden rounded-3xl  transition-all duration-500 hover:-translate-y-2 hover:border-[var(--color-sage)]  custom-img-outer">
                   <img
                     src={section.image}
                     alt={section.title}

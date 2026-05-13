@@ -5,3 +5,8 @@ export const applyCoupon = async (code) => {
   return data.data;
 };
 
+export const getPublicCoupons = async () => {
+  const { data } = await axiosInstance.get("/coupons/public");
+  return data.data || [];
+};
+

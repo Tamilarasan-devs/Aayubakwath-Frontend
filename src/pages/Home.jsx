@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <div className="w-full max-w-full bg-white overflow-x-hidden">
       <Helmet>
-        <title>Aayubakwath — Premium Ayurvedic Wellness</title>
+        <title>Aayubakwath — Premium Herbal Wellness</title>
       </Helmet>
 
       <Banner />

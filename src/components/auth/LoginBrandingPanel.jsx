@@ -23,7 +23,7 @@ export default function LoginBrandingPanel() {
               Aayubakwath
             </p>
             <p className="font-body text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--color-sage-dark)]">
-              Ayurvedic Wellness
+              Herbal Wellness
             </p>
           </div>
         </div>
