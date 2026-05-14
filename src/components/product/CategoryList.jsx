@@ -32,7 +32,6 @@ export default function CategoryBannerList() {
     queryKey: ["categories"],
     queryFn: getCategories,
   });
-console.log('categories :',categories)
   if (categories.length === 0) return null;
 
   return (
