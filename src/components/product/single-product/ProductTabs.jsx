@@ -456,7 +456,7 @@ export default function ProductTabs({
                       >
                       <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl bg-gradient-to-r from-[var(--color-sage)] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-                      <div className="mx-auto mb-6 flex h-[108px] w-[108px] items-center justify-center overflow-hidden rounded-[26px] bg-[var(--color-bg-soft)]">
+                      {/* <div className="mx-auto mb-6 flex h-[108px] w-[108px] items-center justify-center overflow-hidden rounded-[26px] bg-[var(--color-bg-soft)]">
                         {row.image ? (
                           <img
                             src={row.image}
@@ -487,7 +487,7 @@ export default function ProductTabs({
                             </motion.div>
                           </motion.div>
                         )}
-                      </div>
+                      </div> */}
 
                       <h4 className="mb-2 text-[18px] font-semibold text-[var(--color-text)] transition-colors duration-500 group-hover:text-[var(--color-sage)]">
                         {row.key}
