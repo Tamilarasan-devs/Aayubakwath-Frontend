@@ -82,6 +82,18 @@ export default function FooterContact() {
             info.sblsmarketing@gmail.com
           </span>
         </a>
+        <a
+          href="mailto:support@aayubakwath.com"
+          className="group flex items-center gap-4 text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-sage)]"
+        >
+          <Mail
+            size={15}
+            className="shrink-0 text-[var(--color-text)] transition-colors group-hover:text-[var(--color-sage)]"
+          />
+          <span className="break-all font-body text-[1.08rem]">
+            support@aayubakwath.com
+          </span>
+        </a>
       </div>
 
       <div className="flex flex-wrap gap-2.5">

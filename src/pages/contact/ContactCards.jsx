@@ -9,6 +9,7 @@ import useInView from "../../hooks/useInView";
 const contactCards = [
   { icon: MapPin, label: "Visit Us", value: "No:1/770, K.Ayyampalayam (PO)", sub: "Palladam, Tiruppur, TN 641662", href: null },
   { icon: Mail, label: "Email Us", value: "info.sblsmarketing@gmail.com", sub: "Reply within 24 hours", href: "mailto:info.sblsmarketing@gmail.com" },
+  { icon: Mail, label: "Email Us", value: "support@aayubakwath.com", sub: "Reply within 24 hours", href: "mailto:support@aayubakwath.com" },
   { icon: Phone, label: "Call Us", value: "+91 94431 57282", sub: "Mon – Sat, 9 AM – 6 PM", href: "tel:+919443157282" },
 ];
 
