@@ -7,10 +7,29 @@ import {
 import useInView from "../../hooks/useInView";
 
 const contactCards = [
-  { icon: MapPin, label: "Visit Us", value: "No:1/770, K.Ayyampalayam (PO)", sub: "Palladam, Tiruppur, TN 641662", href: null },
-  { icon: Mail, label: "Email Us", value: "info.sblsmarketing@gmail.com", sub: "Reply within 24 hours", href: "mailto:info.sblsmarketing@gmail.com" },
-  { icon: Mail, label: "Email Us", value: "support@aayubakwath.com", sub: "Reply within 24 hours", href: "mailto:support@aayubakwath.com" },
-  { icon: Phone, label: "Call Us", value: "+91 94431 57282", sub: "Mon – Sat, 9 AM – 6 PM", href: "tel:+919443157282" },
+  {
+    icon: MapPin,
+    label: "Visit Us",
+    value: "No:1/770, K.Ayyampalayam (PO)",
+    sub: "Palladam, Tiruppur, TN 641662",
+    href: null,
+  },
+  {
+    icon: Mail,
+    label: "Email Us",
+    emails: [
+      "info.sblsmarketing@gmail.com",
+      "support@aayubakwath.com",
+    ],
+    sub: "Reply within 24 hours",
+  },
+  {
+    icon: Phone,
+    label: "Call Us",
+    value: "+91 94431 57282",
+    sub: "Mon – Sat, 9 AM – 6 PM",
+    href: "tel:+919443157282",
+  },
 ];
 
 function Reveal({ children, delay = 0, className = "" }) {
@@ -47,13 +66,13 @@ export default function ContactCards() {
             </p>
             <div className="w-8 h-px bg-[var(--color-sage)]" />
           </div>
-          
+
         </div>
-           <h2
+        <h2
           className=" text-[var(--color-text)] mb-6"
           style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}
         >
-         Reach Us Directly
+          Reach Us Directly
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {contactCards.map((card, i) => {
@@ -68,12 +87,29 @@ export default function ContactCards() {
                   <p className="text-sm font-semibold uppercase tracking-widest text-gray-500 mb-2">
                     {card.label}
                   </p>
-                  {card.href ? (
-                    <a href={card.href} className="font-display font-semibold text-xl text-[#111827] hover:text-[#111827] transition-colors block mb-1 break-all">
+                  {card.emails ? (
+                    <div className="space-y-1 mb-1">
+                      {card.emails.map((email, idx) => (
+                        <a
+                          key={idx}
+                          href={`mailto:${email}`}
+                          className="font-display font-semibold text-xl text-[#111827] hover:text-[var(--color-sage)] transition-colors block break-all"
+                        >
+                          {email}
+                        </a>
+                      ))}
+                    </div>
+                  ) : card.href ? (
+                    <a
+                      href={card.href}
+                      className="font-display font-semibold text-xl text-[#111827] hover:text-[#111827] transition-colors block mb-1 break-all"
+                    >
                       {card.value}
                     </a>
                   ) : (
-                    <p className="font-display font-semibold text-xl text-[#111827] mb-1">{card.value}</p>
+                    <p className="font-display font-semibold text-xl text-[#111827] mb-1">
+                      {card.value}
+                    </p>
                   )}
                   <p className="text-gray-500 text-base font-medium">{card.sub}</p>
                 </div>
