@@ -1,22 +1,32 @@
 import axiosInstance from '../utils/axiosInstance'
 
-const extractTokens = (data) => ({
-  token:
-    data?.data?.token ||
-    data?.token ||
-    data?.data?.accessToken ||
-    data?.accessToken,
-  refreshToken: data?.data?.refreshToken || data?.refreshToken,
-})
+const extractAuthData = (data) => {
+  const result = data?.data || data
+  return {
+    token: result.token || result.accessToken,
+    refreshToken: result.refreshToken,
+    user: result.user
+  }
+}
 
 export const loginUser = async (credentials) => {
   const { data } = await axiosInstance.post('/auth/login', credentials)
-  return extractTokens(data)
+  return extractAuthData(data)
 }
 
 export const registerUser = async (userData) => {
   const { data } = await axiosInstance.post('/auth/register', userData)
-  return extractTokens(data)
+  return data.data
+}
+
+export const verifyOtp = async ({ userId, otp }) => {
+  const { data } = await axiosInstance.post('/auth/verify-otp', { userId, otp })
+  return extractAuthData(data)
+}
+
+export const resendOtp = async (userId) => {
+  const { data } = await axiosInstance.post('/auth/resend-otp', { userId })
+  return data.data
 }
 
 export const forgotPassword = async (email) => {

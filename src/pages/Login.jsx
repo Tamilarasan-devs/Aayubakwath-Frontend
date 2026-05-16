@@ -31,8 +31,8 @@ export default function Login() {
   const mutation = useMutation({
     mutationFn: loginUser,
 
-    onSuccess: ({ token, refreshToken }) => {
-      login({ token, refreshToken });
+    onSuccess: ({ token, refreshToken, user }) => {
+      login({ token, refreshToken }, user);
 
       toast.success("Welcome back!");
 
