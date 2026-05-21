@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Share2, ChevronDown } from "lucide-react";
+import { Heart, Share2, ChevronDown, ChevronsLeft } from "lucide-react";
 import { toast } from "react-toastify";
 
 export default function ProductMeta({
@@ -15,11 +15,14 @@ export default function ProductMeta({
   const [showMore, setShowMore] = useState(false);
   const shortSentence = String(
     product?.productDescription ||
-      product?.shortDescription ||
-      product?.description ||
-      "",
+    product?.shortDescription ||
+    product?.description ||
+    "",
   ).trim();
+  useEffect(() => {
 
+    console.log('product : ', product)
+  }, [])
   const longDescription = useMemo(() => {
     const raw =
       product?.content?.content?.description ||
@@ -175,7 +178,7 @@ export default function ProductMeta({
                     {longDescription}
                   </p>
 
-                  
+
                 </div>
               </div>
             </motion.div>

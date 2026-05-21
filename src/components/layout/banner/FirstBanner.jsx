@@ -23,8 +23,8 @@ export default function FirstBanner() {
     activeCoupon?.discountType === "PERCENT"
       ? `Save ${activeCoupon.discountValue}% On Your First Order`
       : activeCoupon?.discountValue
-      ? `Save ₹${Number(activeCoupon.discountValue).toFixed(0)} On Your First Order`
-      : "Save On Your First Order";
+        ? `Save ₹${Number(activeCoupon.discountValue).toFixed(0)} On Your First Order`
+        : "Save On Your First Order";
 
   const handleClaimOffer = (e) => {
     e.stopPropagation();
@@ -66,7 +66,7 @@ export default function FirstBanner() {
             <span className="font-semibold text-white bg-black px-2 py-0.5 rounded-sm mx-1 shadow-sm border border-[var(--color-border)] tracking-[0.06em]">
               {couponCode}
             </span>{" "}
-            at checkout to claim your wellness gift.
+            at checkout to claim your 30% welcome discount
           </p>
         </div>
 

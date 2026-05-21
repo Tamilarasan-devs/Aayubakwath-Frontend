@@ -183,9 +183,14 @@ export default function ProductTabs({
                   </div>
 
                   <div className="lg:col-span-7">
-                    <h3 className="mb-6 w-full text-[22px] font-semibold leading-[1.35] text-[var(--color-text)]">
+                    <h3 className="mb-4 w-full text-[22px] font-semibold leading-[1.35] text-[var(--color-text)]">
                       {descriptionHeading || "Key Benefits"}
                     </h3>
+                    {descriptionText && (
+                      <p className="mb-6 text-base text-[var(--color-text-secondary)] leading-relaxed font-medium">
+                        {descriptionText}
+                      </p>
+                    )}
 
                     <div className="space-y-4">
                       {benefits.map((b, idx) => (

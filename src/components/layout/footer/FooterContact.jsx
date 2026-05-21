@@ -42,7 +42,7 @@ export default function FooterContact() {
       </div>
 
       <p className="mb-6 max-w-[430px] font-body text-[1.08rem] leading-[1.72] text-[var(--color-text-secondary)]">
-        Nature&apos;s wisdom, crafted for your well-being. Rooted in tradition,
+        Nature&apos;s wisdom, crafted for your well-being.  in tradition,
         refined for today&apos;s modern lifestyle.
       </p>
 
