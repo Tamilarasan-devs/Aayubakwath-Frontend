@@ -14,22 +14,13 @@ const contactCards = [
     sub: "Palladam, Tiruppur, TN 641662",
     href: null,
   },
-  {
-    icon: Mail,
-    label: "Email Us",
-    emails: [
-      "info.sblsmarketing@gmail.com",
-      "support@aayubakwath.com",
-    ],
-    sub: "Reply within 24 hours",
-  },
-  {
-    icon: Phone,
-    label: "Call Us",
-    value: "+91 94431 57282",
-    sub: "Mon – Sat, 9 AM – 6 PM",
-    href: "tel:+919443157282",
-  },
+  // {
+  //   icon: Phone,
+  //   label: "Call Us",
+  //   value: "+91 94431 57282",
+  //   sub: "Mon – Sat, 9 AM – 6 PM",
+  //   href: "tel:+919443157282",
+  // },
 ];
 
 function Reveal({ children, delay = 0, className = "" }) {

@@ -183,14 +183,14 @@ export default function ProductTabs({
                   </div>
 
                   <div className="lg:col-span-7">
-                    <h3 className="mb-4 w-full text-[22px] font-semibold leading-[1.35] text-[var(--color-text)]">
+                    {/* <h3 className="mb-4 w-full text-[22px] font-semibold leading-[1.35] text-[var(--color-text)]">
                       {descriptionHeading || "Key Benefits"}
-                    </h3>
-                    {descriptionText && (
+                    </h3> */}
+                    {/* {descriptionText && (
                       <p className="mb-6 text-base text-[var(--color-text-secondary)] leading-relaxed font-medium">
                         {descriptionText}
                       </p>
-                    )}
+                    )} */}
 
                     <div className="space-y-4">
                       {benefits.map((b, idx) => (
@@ -433,17 +433,17 @@ export default function ProductTabs({
             {activeTab === "warning" && (
               <div className="w-full">
                 <div className="mb-10 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-soft)] px-6 py-7 md:px-8 md:py-8">
-                 
-                  <h2
-          className="display-heading text-(--color-text-secondary) text-center mb-4"
-          style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}
-        >
-         Important Information
-        </h2>
 
-                    <p className="text-center text-[20px] font-semibold leading-relaxed text-[var(--color-text)]">
-                       This product is not intended to diagnose, treat, cure, or prevent any disease.
-                    </p>
+                  <h2
+                    className="display-heading text-(--color-text-secondary) text-center mb-4"
+                    style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}
+                  >
+                    Important Information
+                  </h2>
+
+                  <p className="text-center text-[20px] font-semibold leading-relaxed text-[var(--color-text)]">
+                    This product is not intended to diagnose, treat, cure, or prevent any disease.
+                  </p>
 
                 </div>
 
@@ -459,9 +459,9 @@ export default function ProductTabs({
                         transition={{ delay: idx * 0.06 }}
                         className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-[var(--color-sage)] hover:shadow-2xl hover:shadow-[rgba(130,155,28,0.12)]"
                       >
-                      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl bg-gradient-to-r from-[var(--color-sage)] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl bg-gradient-to-r from-[var(--color-sage)] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-                      {/* <div className="mx-auto mb-6 flex h-[108px] w-[108px] items-center justify-center overflow-hidden rounded-[26px] bg-[var(--color-bg-soft)]">
+                        {/* <div className="mx-auto mb-6 flex h-[108px] w-[108px] items-center justify-center overflow-hidden rounded-[26px] bg-[var(--color-bg-soft)]">
                         {row.image ? (
                           <img
                             src={row.image}
@@ -494,12 +494,12 @@ export default function ProductTabs({
                         )}
                       </div> */}
 
-                      <h4 className="mb-2 text-[18px] font-semibold text-[var(--color-text)] transition-colors duration-500 group-hover:text-[var(--color-sage)]">
-                        {row.key}
-                      </h4>
-                      <p className="text-[15px] leading-relaxed text-[var(--color-text-secondary)] font-medium">
-                        {row.val}
-                      </p>
+                        <h4 className="mb-2 text-[18px] font-semibold text-[var(--color-text)] transition-colors duration-500 group-hover:text-[var(--color-sage)]">
+                          {row.key}
+                        </h4>
+                        <p className="text-[15px] leading-relaxed text-[var(--color-text-secondary)] font-medium">
+                          {row.val}
+                        </p>
                       </motion.div>
                     );
                   })}
@@ -510,17 +510,17 @@ export default function ProductTabs({
             {/* How to use */}
             {activeTab === "howToUse" && (
               <div className="grid grid-cols-1 items-start gap-7 lg:grid-cols-12 lg:gap-12">
-	                <div className="lg:col-span-5">
-	                  <div className="group mx-auto w-full max-w-[600px] rounded-2xl border border-[var(--color-border)] bg-white shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-[var(--color-sage)] hover:shadow-2xl hover:shadow-[rgba(130,155,28,0.12)]">
-	                    <div className="aspect-square w-full overflow-hidden rounded-2xl bg-[var(--color-bg-soft)] flex items-center justify-center">
-	                      {howToUseImage || displayImage ? (
-	                        <img
-	                          src={howToUseImage || displayImage}
-	                          alt={product.productName}
-	                          className="h-full w-full object-contain p-8 lg:p-10 transition-transform duration-500 group-hover:scale-[1.02]"
-	                          draggable={false}
-	                        />
-	                      ) : (
+                <div className="lg:col-span-5">
+                  <div className="group mx-auto w-full max-w-[600px] rounded-2xl border border-[var(--color-border)] bg-white shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-[var(--color-sage)] hover:shadow-2xl hover:shadow-[rgba(130,155,28,0.12)]">
+                    <div className="aspect-square w-full overflow-hidden rounded-2xl bg-[var(--color-bg-soft)] flex items-center justify-center">
+                      {howToUseImage || displayImage ? (
+                        <img
+                          src={howToUseImage || displayImage}
+                          alt={product.productName}
+                          className="h-full w-full object-contain p-8 lg:p-10 transition-transform duration-500 group-hover:scale-[1.02]"
+                          draggable={false}
+                        />
+                      ) : (
                         <div className="h-full w-full animate-pulse bg-[var(--color-bg-soft)]" />
                       )}
                     </div>

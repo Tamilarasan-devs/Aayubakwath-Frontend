@@ -248,15 +248,15 @@ export default function Header() {
     return [];
   };
 
-	  const handleShopMenuClick = (item) => {
-	    const list = Array.isArray(products) ? products : [];
-	    const preferred = (item.preferredNames || []).map((n) =>
-	      String(n || "").toLowerCase().trim(),
-	    );
+  const handleShopMenuClick = (item) => {
+    const list = Array.isArray(products) ? products : [];
+    const preferred = (item.preferredNames || []).map((n) =>
+      String(n || "").toLowerCase().trim(),
+    );
     const exactMatch = preferred.length
       ? list.find((p) =>
-          preferred.includes(String(p?.productName || "").toLowerCase().trim()),
-        )
+        preferred.includes(String(p?.productName || "").toLowerCase().trim()),
+      )
       : null;
 
     const normalizedHints = (item.productHints || []).map((hint) =>
@@ -283,12 +283,12 @@ export default function Header() {
     const matchedProductId = matchedProduct?.id || matchedProduct?._id;
 
     setShopOpen(false);
-	    if (matchedProductId) {
-	      navigate(`/product/${matchedProductId}`);
-	      return;
-	    }
-	    navigate(`/productListing?q=${encodeURIComponent(item.q)}`);
-	  };
+    if (matchedProductId) {
+      navigate(`/product/${matchedProductId}`);
+      return;
+    }
+    navigate(`/productListing?q=${encodeURIComponent(item.q)}`);
+  };
 
   return (
     <>
@@ -349,10 +349,9 @@ export default function Header() {
                           navigate(href);
                         }}
                         className={`relative px-2 py-2 font-body text-[15px] xl:text-[16px] font-semibold transition-colors duration-200 xl:px-2.5
-                          ${
-                            active
-                              ? "text-[var(--color-text)]"
-                              : "text-[var(--color-text)]/92 hover:text-[var(--color-sage)]"
+                          ${active
+                            ? "text-[var(--color-text)]"
+                            : "text-[var(--color-text)]/92 hover:text-[var(--color-sage)]"
                           }`}
                         aria-haspopup="menu"
                         aria-expanded={shopOpen}
@@ -382,38 +381,38 @@ export default function Header() {
                               <div className="overflow-hidden rounded-[calc(1.5rem-1px)] border border-white/60 bg-white">
                                 <div className="px-7 py-7">
                                   <div className="grid grid-cols-5 gap-7">
-                                {shopMenuItems.map((item) => (
-                                  <button
-                                    key={item.cta}
-                                    type="button"
-                                    onClick={() => {
-                                      handleShopMenuClick(item);
-                                    }}
-                                    className="group flex flex-col items-center text-center"
-                                    role="menuitem"
-                                  >
-                                    <div className="flex h-[170px] w-full items-end justify-center overflow-hidden px-2 pt-3 pb-2">
-                                      <img
-                                        src={item.image}
-                                        alt={item.cta}
-                                        loading="lazy"
-                                        decoding="async"
-                                        className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
-                                      />
-                                    </div>
+                                    {shopMenuItems.map((item) => (
+                                      <button
+                                        key={item.cta}
+                                        type="button"
+                                        onClick={() => {
+                                          handleShopMenuClick(item);
+                                        }}
+                                        className="group flex flex-col items-center text-center"
+                                        role="menuitem"
+                                      >
+                                        <div className="flex h-[170px] w-full items-end justify-center overflow-hidden px-2 pt-3 pb-2">
+                                          <img
+                                            src={item.image}
+                                            alt={item.cta}
+                                            loading="lazy"
+                                            decoding="async"
+                                            className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                                          />
+                                        </div>
 
-                                    <p className="mt-4 flex h-[2.75rem] items-start justify-center font-body text-[11px] font-semibold uppercase tracking-[0.32em] text-[#40443a]">
-                                      {item.eyebrow}
-                                    </p>
+                                        <p className="mt-4 flex h-[2.75rem] items-start justify-center font-body text-[11px] font-semibold uppercase tracking-[0.32em] text-[#40443a]">
+                                          {item.eyebrow}
+                                        </p>
 
-                                    <span className="mt-4 inline-flex h-12 min-w-[180px] items-center justify-center gap-3 rounded-full border border-[#b9b9b9] bg-white px-7 font-body text-[13px] font-bold text-black transition-all duration-300 group-hover:border-[var(--color-sage)] group-hover:bg-[var(--color-sage-light)] group-hover:text-[var(--color-sage-dark)]">
-                                      {item.cta}
-                                      <span className="text-black/70 transition-transform duration-300 group-hover:translate-x-0.5">
-                                        ›
-                                      </span>
-                                      </span>
-                                    </button>
-                                  ))}
+                                        <span className="mt-4 inline-flex h-12 min-w-[180px] items-center justify-center gap-3 rounded-full border border-[#b9b9b9] bg-white px-7 font-body text-[13px] font-bold text-black transition-all duration-300 group-hover:border-[var(--color-sage)] group-hover:bg-[var(--color-sage-light)] group-hover:text-[var(--color-sage-dark)]">
+                                          {item.cta}
+                                          <span className="text-black/70 transition-transform duration-300 group-hover:translate-x-0.5">
+                                            ›
+                                          </span>
+                                        </span>
+                                      </button>
+                                    ))}
                                   </div>
                                 </div>
                               </div>
@@ -433,10 +432,9 @@ export default function Header() {
                       navigate(href);
                     }}
                     className={`relative px-2 py-2 font-body text-[15px] xl:text-[16px] font-semibold transition-colors duration-200 xl:px-2.5
-                      ${
-                        active
-                          ? "text-[var(--color-text)]"
-                          : "text-[var(--color-text)]/92 hover:text-[var(--color-sage)]"
+                      ${active
+                        ? "text-[var(--color-text)]"
+                        : "text-[var(--color-text)]/92 hover:text-[var(--color-sage)]"
                       }`}
                   >
                     {label}
@@ -464,7 +462,7 @@ export default function Header() {
                 {wishlistCount > 0 && <BadgeCount n={wishlistCount} />}
               </a>
 
-              <a
+              {/* <a
                 href="/trackorder"
                 onClick={(e) => {
                   e.preventDefault();
@@ -475,7 +473,7 @@ export default function Header() {
                   transition-colors duration-200 hover:text-[var(--color-text)]"
               >
                 <FaTruck size={18} />
-              </a>
+              </a> */}
 
               <div className="relative" ref={dropRef}>
                 <button

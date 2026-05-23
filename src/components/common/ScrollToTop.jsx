@@ -27,11 +27,12 @@ export default function ScrollToTop() {
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed bottom-20 right-3 sm:bottom-8 sm:right-8 z-50 p-4 rounded-full shadow-xl transition-all duration-300
+      aria-label="Scroll to top"
+      className={`fixed bottom-24 right-4 sm:bottom-8 sm:right-8 z-50 p-3 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer border-0 outline-none
       ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"}
-      bg-[#111827] hover:bg-black text-white`}
+      bg-[#111827] hover:bg-[#829b1c] text-white`}
     >
-      <ChevronUp size={10} />
+      <ChevronUp size={20} />
     </button>
   );
 }

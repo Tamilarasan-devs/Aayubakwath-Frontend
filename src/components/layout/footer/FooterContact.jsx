@@ -60,7 +60,7 @@ export default function FooterContact() {
             Palladam, Tiruppur – 641662, TN
           </p>
         </div>
-        <a
+        {/* <a
           href="tel:9443157282"
           className="group flex items-center gap-4 text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-sage)]"
         >
@@ -69,19 +69,7 @@ export default function FooterContact() {
             className="shrink-0 text-[var(--color-text)] transition-colors group-hover:text-[var(--color-sage)]"
           />
           <span className="font-body text-[1.08rem]">+91 94431 57282</span>
-        </a>
-        <a
-          href="mailto:info.sblsmarketing@gmail.com"
-          className="group flex items-center gap-4 text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-sage)]"
-        >
-          <Mail
-            size={15}
-            className="shrink-0 text-[var(--color-text)] transition-colors group-hover:text-[var(--color-sage)]"
-          />
-          <span className="break-all font-body text-[1.08rem]">
-            info.sblsmarketing@gmail.com
-          </span>
-        </a>
+        </a> */}
         <a
           href="mailto:support@aayubakwath.com"
           className="group flex items-center gap-4 text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-sage)]"

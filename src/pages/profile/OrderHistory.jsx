@@ -18,7 +18,7 @@ export default function OrderHistory({ orders }) {
         {orders.map((order) => {
           const s = statusConfig[order.status] || statusConfig.Processing;
           const firstItemImage = order.items?.[0]?.product?.productImages?.[0];
-          
+
           return (
             <div
               key={order.id}
@@ -53,6 +53,20 @@ export default function OrderHistory({ orders }) {
                 <div>
                   <p className="font-semibold text-[#111827]">Order #{order.id.split("-")[0]}</p>
                   <p className="text-gray-400 text-xs mt-0.5">{new Date(order.createdAt).toLocaleDateString()} · {order.items?.length || 0} items</p>
+                  {(order.trackingId || order.courierName) && (
+                    <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px]">
+                      {order.courierName && (
+                        <span className="font-semibold text-blue-600 bg-blue-50/80 border border-blue-100/50 px-2 py-0.5 rounded-lg">
+                          📦 {order.courierName}
+                        </span>
+                      )}
+                      {order.trackingId && (
+                        <span className="font-mono text-gray-500 bg-gray-50 border border-gray-100 px-2 py-0.5 rounded-lg select-all">
+                          ID: {order.trackingId}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex items-center gap-4 sm:gap-6">
@@ -61,12 +75,12 @@ export default function OrderHistory({ orders }) {
                   {order.status}
                 </span>
                 <p className="font-semibold text-lg text-[#111827]">₹{parseFloat(order.totalAmount).toFixed(2)}</p>
-                <button
+                {/* <button
                   className="text-xs font-semibold text-[#111827] border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-all"
                   onClick={() => navigate("/trackorder")}
                 >
                   Track Order
-                </button>
+                </button> */}
               </div>
             </div>
           );

@@ -84,7 +84,7 @@ export default function ContactForm() {
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-sage-light)] border border-[var(--color-sage)]/25 mb-6">
                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-sage)]" />
-                <span className="text-sm font-semibold uppercase tracking-widest text-[var(--color-sage-dark)]">Why Contact Us</span>
+                <span className="text-sm font-semibold uppercase tracking-widest text-[var(--color-sage-dark)]">Dedicated Support</span>
               </div>
 
               <h3 className="font-display text-3xl font-semibold text-[#111827] mb-3">

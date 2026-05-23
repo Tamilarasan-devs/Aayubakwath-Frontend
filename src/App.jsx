@@ -1,5 +1,6 @@
 import "./App.css";
 import WhatsAppButton from "./components/common/WhatsAppButton";
+import ScrollToTop from "./components/common/ScrollToTop";
 import AppRoutes from "./routes/AppRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,6 +10,7 @@ function App() {
     <>
       <AppRoutes />
       <WhatsAppButton />
+      <ScrollToTop />
       <ToastContainer
         position="top-right"
         autoClose={3000}

@@ -66,8 +66,9 @@ export default function OurStory() {
 
           <div className="max-w-[840px] space-y-7">
             <p className="font-body text-[clamp(1.25rem,2vw,1.6rem)] font-medium text-[var(--color-text)] leading-[1.75] tracking-[-0.015em]">
-              Aayubakwath was founded to support healthier lives through pure,
-              uncompromising natural wellness solutions.
+              Aayubakwath was founded to support
+healthier lives through pure and
+uncompromising natural wellness solutions.
             </p>
             <p className="font-body text-[clamp(1.08rem,1.4vw,1.28rem)] font-medium text-[var(--color-text-secondary)] leading-[1.9] tracking-[-0.012em]">
               In today&apos;s fast-paced world, individuals face increasing health

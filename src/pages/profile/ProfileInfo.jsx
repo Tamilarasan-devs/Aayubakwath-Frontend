@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const statusConfig = {
   Delivered: { color: "text-emerald-700", bg: "bg-emerald-50", border: "border-emerald-200", dot: "bg-emerald-500" },
@@ -6,9 +6,9 @@ const statusConfig = {
   Shipped: { color: "text-blue-700", bg: "bg-blue-50", border: "border-blue-200", dot: "bg-blue-500" },
 };
 
-export default function ProfileInfo({ 
-  user, 
-  orders, 
+export default function ProfileInfo({
+  user,
+  orders,
   onViewAllOrders,
   isEditing,
   onEditToggle,
@@ -24,6 +24,11 @@ export default function ProfileInfo({
     onUpdate(formData);
   };
 
+  useEffect(() => {
+
+    console.log('orders :', orders)
+    console.log('orders :', orders?.product)
+  }, [])
   return (
     <div className="fade-up space-y-6">
       {/* Profile Card */}
@@ -34,7 +39,7 @@ export default function ProfileInfo({
             <p className="text-[var(--color-text-muted)] text-sm mt-1">Manage your account details and contact info</p>
           </div>
           {!isEditing ? (
-            <button 
+            <button
               onClick={onEditToggle}
               className="flex items-center gap-2.5 text-[13px] font-bold text-[var(--color-text)] border border-[var(--color-border)] px-6 py-2.5 rounded-xl hover:bg-[var(--color-bg-warm)] hover:border-[var(--color-sage)] transition-all duration-300"
             >
@@ -46,14 +51,14 @@ export default function ProfileInfo({
             </button>
           ) : (
             <div className="flex items-center gap-3">
-              <button 
+              <button
                 onClick={handleSave}
                 disabled={isUpdating}
                 className="bg-[var(--color-accent)] text-white px-6 py-2.5 rounded-xl text-[13px] font-bold tracking-wider uppercase hover:bg-[var(--color-sage)] transition-all shadow-md active:scale-95 disabled:opacity-50"
               >
                 {isUpdating ? "Saving..." : "Save Changes"}
               </button>
-              <button 
+              <button
                 onClick={onEditToggle}
                 className="bg-[var(--color-bg-muted)] text-[var(--color-text-secondary)] px-6 py-2.5 rounded-xl text-[13px] font-bold tracking-wider uppercase hover:bg-[var(--color-border)] transition-all"
               >
@@ -67,7 +72,7 @@ export default function ProfileInfo({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 animate-in fade-in slide-in-from-top-2">
             <div className="space-y-1.5">
               <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-sage-deep)] ml-1">Full Name</label>
-              <input 
+              <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -76,7 +81,7 @@ export default function ProfileInfo({
             </div>
             <div className="space-y-1.5">
               <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-sage-deep)] ml-1">Phone Number</label>
-              <input 
+              <input
                 type="tel"
                 value={formData.phoneNumber}
                 onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
@@ -129,6 +134,12 @@ export default function ProfileInfo({
                   <div>
                     <p className="font-semibold text-[#111827] text-sm">Order #{order.id.split("-")[0]}</p>
                     <p className="text-gray-400 text-xs">{new Date(order.createdAt).toLocaleDateString()} · {order.items?.length || 0} items</p>
+                    {(order.trackingId || order.courierName) && (
+                      <p className="text-[10px] text-blue-600 mt-0.5 font-medium flex items-center gap-1">
+                        <span>📦 {order.courierName || "Shipped"}</span>
+                        {order.trackingId && <span className="opacity-80">· {order.trackingId}</span>}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center gap-4">

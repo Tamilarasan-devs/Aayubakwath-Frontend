@@ -618,21 +618,21 @@ export default function SingleProduct() {
 
   const ingredients = hasCmsIngredients
     ? {
-        list: productContent.ingredients?.list || [],
-        pills: productContent.ingredients?.pills || [],
-        details: productContent.ingredients?.details || [],
-        raw: (productContent.ingredients?.details || []).map((d) => ({
-          name: d.name || "",
-          desc: d.desc || "",
-          image: d.image || "",
-        })),
-      }
+      list: productContent.ingredients?.list || [],
+      pills: productContent.ingredients?.pills || [],
+      details: productContent.ingredients?.details || [],
+      raw: (productContent.ingredients?.details || []).map((d) => ({
+        name: d.name || "",
+        desc: d.desc || "",
+        image: d.image || "",
+      })),
+    }
     : {
-        list: [],
-        pills: staticIngredients.map((i) => i.name),
-        details: staticIngredients.map((i) => `${i.name}: ${i.desc}`),
-        raw: staticIngredients,
-      };
+      list: [],
+      pills: staticIngredients.map((i) => i.name),
+      details: staticIngredients.map((i) => `${i.name}: ${i.desc}`),
+      raw: staticIngredients,
+    };
   const addMut = useMutation({
     mutationFn: addToCart,
     onSuccess: () => {
@@ -909,7 +909,7 @@ export default function SingleProduct() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45 }}
-          className="mt-5 w-full lg:mt-6"
+          className="mt-5 w-full lg:mt-10"
         >
           <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-4">
             <div className="flex-1">
@@ -931,29 +931,32 @@ export default function SingleProduct() {
       {/* ═══════════════════════════════════════════════════════════
           TABS — Geometric minimal
          ═══════════════════════════════════════════════════════════ */}
-      <ProductTabs
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        TABS={TABS}
-        fadeInUp={fadeInUp}
-        product={product}
-        productContent={productContent}
-        activeImageUrl={activeImageUrl}
-        benefits={benefits}
-        warnings={warnings}
-        howToUse={howToUse}
-        ingredients={ingredients}
-        ingredientCards={ingredientCards}
-        getMatchingIngredientPill={getMatchingIngredientPill}
-        showSelectedIngredient={showSelectedIngredient}
-        selectedIngredientCards={selectedIngredientCards}
-        previewIngredientPill={previewIngredientPill}
-        activeIngredientPill={activeIngredientPill}
-        setActiveIngredientPill={setActiveIngredientPill}
-        setHoveredIngredientPill={setHoveredIngredientPill}
-        setShowIngredientModal={setShowIngredientModal}
-        showIngredientModal={showIngredientModal}
-      />
+      <div className="mt-10">
+
+        <ProductTabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          TABS={TABS}
+          fadeInUp={fadeInUp}
+          product={product}
+          productContent={productContent}
+          activeImageUrl={activeImageUrl}
+          benefits={benefits}
+          warnings={warnings}
+          howToUse={howToUse}
+          ingredients={ingredients}
+          ingredientCards={ingredientCards}
+          getMatchingIngredientPill={getMatchingIngredientPill}
+          showSelectedIngredient={showSelectedIngredient}
+          selectedIngredientCards={selectedIngredientCards}
+          previewIngredientPill={previewIngredientPill}
+          activeIngredientPill={activeIngredientPill}
+          setActiveIngredientPill={setActiveIngredientPill}
+          setHoveredIngredientPill={setHoveredIngredientPill}
+          setShowIngredientModal={setShowIngredientModal}
+          showIngredientModal={showIngredientModal}
+        />
+      </div>
 
       {/* ═══════════════════════════════════════════════════════════
           BRAND PROMISE SECTION
