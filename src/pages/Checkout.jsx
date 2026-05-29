@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,11 +9,20 @@ import CheckoutSteps from "./checkout/CheckoutSteps";
 import AddressSelector from "./checkout/AddressSelector";
 import NewAddressForm from "./checkout/NewAddressForm";
 import OrderSummary from "./checkout/OrderSummary";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Checkout() {
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { isAuthenticated } = useAuth();
   const [step] = useState(0);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast.error("Please login first.");
+      navigate("/login?redirect=/checkout");
+    }
+  }, [isAuthenticated, navigate]);
 
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [newAddress, setNewAddress] = useState("");
@@ -21,6 +30,7 @@ export default function Checkout() {
   const { data: userProfile, isLoading: isUserLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
+    enabled: isAuthenticated,
   });
 
   const { data: cartData, isLoading: isCartLoading } = useQuery({

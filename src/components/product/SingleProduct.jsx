@@ -524,7 +524,6 @@ export default function SingleProduct() {
   const { data: wishlistData } = useQuery({
     queryKey: ["wishlist"],
     queryFn: getWishlist,
-    enabled: isAuthenticated,
   });
 
   const wishlisted = useMemo(() => {
@@ -534,7 +533,7 @@ export default function SingleProduct() {
 
   const wishlistMut = useMutation({
     mutationFn: () =>
-      wishlisted ? removeFromWishlist(productId) : addToWishlist({ productId }),
+      wishlisted ? removeFromWishlist(productId) : addToWishlist({ productId, product }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["wishlist"] });
       toast.success(
@@ -542,10 +541,7 @@ export default function SingleProduct() {
       );
     },
     onError: (err) => {
-      if (err.response?.status === 401) {
-        toast.error("Please login first.");
-        navigate("/login");
-      } else toast.error("Failed to update wishlist.");
+      toast.error("Failed to update wishlist.");
     },
   });
 
@@ -640,30 +636,27 @@ export default function SingleProduct() {
       toast.success("Added to cart!");
     },
     onError: (err) => {
-      if (err.response?.status === 401) {
-        toast.error("Please login first.");
-        navigate("/login");
-      } else toast.error("Failed to add to cart.");
+      toast.error("Failed to add to cart.");
     },
   });
 
   const handleAddToCart = () => {
-    if (!isAuthenticated) {
-      toast.error("Please login first.");
-      navigate("/login");
-      return;
-    }
-    addMut.mutate({ productId, quantity: qty });
+    addMut.mutate({ productId, quantity: qty, product });
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     if (!isAuthenticated) {
-      toast.error("Please login first.");
-      navigate("/login");
+      try {
+        await addToCart({ productId, quantity: qty, product });
+        qc.invalidateQueries({ queryKey: ["cart"] });
+        navigate("/login?redirect=/checkout");
+      } catch (err) {
+        toast.error("Failed to add to cart.");
+      }
       return;
     }
     addMut.mutate(
-      { productId, quantity: qty },
+      { productId, quantity: qty, product },
       {
         onSuccess: () => {
           qc.invalidateQueries({ queryKey: ["cart"] });

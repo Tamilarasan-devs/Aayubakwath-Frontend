@@ -63,36 +63,7 @@ export default function CartPopup({
                 </button>
               </div>
 
-              {!isAuthenticated ? (
-                <div className="flex flex-1 flex-col justify-center px-5 py-8 text-center sm:px-6">
-                  <p className="text-[17px] font-semibold text-[var(--color-text)]">
-                    Sign in to view your cart
-                  </p>
-                  <p className="mt-2 text-[13px] leading-6 text-[var(--color-text-secondary)]">
-                    Your saved cart items and checkout will appear here after login.
-                  </p>
-                  <div className="mt-6 flex gap-3">
-                    <button
-                      onClick={() => {
-                        onClose();
-                        navigate("/login");
-                      }}
-                      className="flex-1 rounded-full bg-black px-5 py-3 text-[12px] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#1f1f1f]"
-                    >
-                      Sign In
-                    </button>
-                    <button
-                      onClick={() => {
-                        onClose();
-                        navigate("/productListing");
-                      }}
-                      className="flex-1 rounded-full border border-black px-5 py-3 text-[12px] font-semibold uppercase tracking-[0.08em] text-black transition-colors hover:bg-black hover:text-white"
-                    >
-                      Shop Now
-                    </button>
-                  </div>
-                </div>
-              ) : cartItems.length === 0 ? (
+              {cartItems.length === 0 ? (
                 <div className="flex flex-1 flex-col justify-center px-5 py-8 text-center sm:px-6">
                   <p className="text-[17px] font-semibold text-[var(--color-text)]">
                     Your cart is empty

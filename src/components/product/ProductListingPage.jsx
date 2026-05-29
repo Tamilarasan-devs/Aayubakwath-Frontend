@@ -119,7 +119,6 @@ export default function ProductListingPage() {
   const { data: wishlistData } = useQuery({
     queryKey: ["wishlist"],
     queryFn: getWishlist,
-    enabled: isAuthenticated,
   });
   const wishlistSet = useMemo(() => {
     const items = wishlistData?.data || [];

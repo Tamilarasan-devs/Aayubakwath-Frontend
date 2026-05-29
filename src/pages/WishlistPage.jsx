@@ -23,7 +23,6 @@ export default function WishlistPage() {
   } = useQuery({
     queryKey: ["wishlist"],
     queryFn: getWishlist,
-    enabled: isAuthenticated,
   });
 
   const removeMutation = useMutation({
@@ -44,12 +43,7 @@ export default function WishlistPage() {
       toast.success("Added to cart");
     },
     onError: (error) => {
-      if (error.response?.status === 401) {
-        toast.error("Please login first");
-        navigate("/login");
-      } else {
-        toast.error("Failed to add to cart");
-      }
+      toast.error("Failed to add to cart");
     },
   });
 

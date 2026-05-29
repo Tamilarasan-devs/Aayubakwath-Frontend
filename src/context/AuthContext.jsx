@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { tokenStore, AUTH_LOGOUT_EVENT } from '../utils/tokenStore'
 import { AuthContext } from './AuthContextValue'
+import axiosInstance from '../utils/axiosInstance'
 
 const PROTECTED_ROUTES = ['/profile', '/cart', '/checkout', '/wishlist', '/trackorder']
 
@@ -10,12 +11,40 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => tokenStore.getToken())
   const [user, setUser] = useState(() => tokenStore.getUser())
 
-  const login = useCallback((tokens, userData = null) => {
+  const login = useCallback(async (tokens, userData = null) => {
     tokenStore.setTokens(tokens.token, tokens.refreshToken)
     if (userData) tokenStore.setUser(userData)
+
+    // Sync guest cart to backend
+    try {
+      const guestCart = JSON.parse(localStorage.getItem('guest_cart') || '[]')
+      if (guestCart.length > 0) {
+        for (const item of guestCart) {
+          await axiosInstance.post('/cart', { productId: item.productId, quantity: item.quantity })
+        }
+        localStorage.removeItem('guest_cart')
+      }
+    } catch (err) {
+      console.error('Failed to sync guest cart to backend', err)
+    }
+
+    // Sync guest wishlist to backend
+    try {
+      const guestWishlist = JSON.parse(localStorage.getItem('guest_wishlist') || '[]')
+      if (guestWishlist.length > 0) {
+        for (const item of guestWishlist) {
+          await axiosInstance.post('/wishlist', { productId: item.productId })
+        }
+        localStorage.removeItem('guest_wishlist')
+      }
+    } catch (err) {
+      console.error('Failed to sync guest wishlist to backend', err)
+    }
+
     setToken(tokens.token)
     setUser(userData)
   }, [])
+
 
   const logout = useCallback(() => {
     tokenStore.clear()

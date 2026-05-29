@@ -111,7 +111,6 @@ export default function Header() {
     queryKey: ["cart"],
     queryFn: getCart,
     retry: false,
-    enabled: isAuthenticated,
   });
   const cartCount =
     cartData?.data?.reduce((sum, item) => sum + item.quantity, 0) || 0;
@@ -120,12 +119,11 @@ export default function Header() {
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
-
+ 
   const { data: wishlistData } = useQuery({
     queryKey: ["wishlist"],
     queryFn: getWishlist,
     retry: false,
-    enabled: isAuthenticated,
   });
   const wishlistCount = wishlistData?.data?.length || 0;
 

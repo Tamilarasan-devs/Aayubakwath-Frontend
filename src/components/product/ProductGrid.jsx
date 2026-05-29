@@ -41,7 +41,6 @@ export default function ProductGrid() {
   const { data: wishlistData } = useQuery({
     queryKey: ["wishlist"],
     queryFn: getWishlist,
-    enabled: isAuthenticated,
   });
 
   const { data: categories = [] } = useQuery({

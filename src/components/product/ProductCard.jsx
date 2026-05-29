@@ -35,11 +35,6 @@ const ProductCard = memo(function ProductCard({
 
   const handleAddToCart = async (e) => {
     e.stopPropagation();
-    if (!isAuthenticated) {
-      toast.error("Please login first.");
-      navigate("/login");
-      return;
-    }
     if (adding) return;
     setAdding(true);
 
@@ -60,14 +55,11 @@ const ProductCard = memo(function ProductCard({
     toast.success("Item added to cart!");
 
     try {
-      await addToCart({ productId: product.id, quantity: 1 });
+      await addToCart({ productId: product.id, quantity: 1, product });
       qc.invalidateQueries({ queryKey: ["cart"] });
     } catch (err) {
       qc.invalidateQueries({ queryKey: ["cart"] });
-      if (err.response?.status === 401) {
-        toast.error("Please login first.");
-        navigate("/login");
-      } else toast.error("Failed to add to cart.");
+      toast.error("Failed to add to cart.");
     } finally {
       setAdding(false);
     }
@@ -79,26 +71,18 @@ const ProductCard = memo(function ProductCard({
     mutationFn: () =>
       wishlisted
         ? removeFromWishlist(product.id)
-        : addToWishlist({ productId: product.id }),
+        : addToWishlist({ productId: product.id, product }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["wishlist"] });
       toast.success(wishlisted ? "Removed from wishlist" : "Added to wishlist");
     },
     onError: (err) => {
-      if (err.response?.status === 401) {
-        toast.error("Please login first.");
-        navigate("/login");
-      } else toast.error("Failed to update wishlist.");
+      toast.error("Failed to update wishlist.");
     },
   });
 
   const handleToggleWishlist = (e) => {
     e.stopPropagation();
-    if (!isAuthenticated) {
-      toast.error("Please login first.");
-      navigate("/login");
-      return;
-    }
     wishlistMut.mutate();
   };
 
