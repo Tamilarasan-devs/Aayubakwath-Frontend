@@ -58,7 +58,7 @@ export default function Home() {
           className="display-heading text-[var(--color-text)] mb-4"
           style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}
         >
-          Our Supplements 
+          Our Supplements
         </h2>
         <LazySection minHeight={200}>
           <CategoryList />

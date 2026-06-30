@@ -474,7 +474,7 @@ const StarRow = ({ rating, size = 14 }) => (
         size={size}
         className={
           i <= Math.round(rating)
-            ? "fill-amber-400 text-amber-400"
+            ? "fill-[#EFBF04] text-[#EFBF04]"
             : "fill-gray-200 text-gray-200"
         }
       />

@@ -61,7 +61,7 @@ function ReviewCard({ testimonial, isActive }) {
           "opacity 0.4s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease",
       }}
     >
-      <div className="mb-5 flex items-center gap-4">
+      {/* <div className="mb-5 flex items-center gap-4">
         <div className="h-16 w-16 overflow-hidden rounded-full border border-[rgba(184,166,140,0.35)] bg-[var(--color-bg-warm)]">
           <img
             src={testimonial.image}
@@ -71,7 +71,7 @@ function ReviewCard({ testimonial, isActive }) {
             className="h-full w-full object-cover"                                                                                              
           />
         </div>
-      </div>
+      </div> */}
 
       <p
         className="font-body"
