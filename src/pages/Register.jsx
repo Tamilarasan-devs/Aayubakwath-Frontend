@@ -25,6 +25,7 @@ export default function Register() {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: "",
     agree: false,
@@ -93,6 +94,7 @@ export default function Register() {
     registerMutation.mutate({
       name: form.name,
       email: form.email,
+      phoneNumber: form.phoneNumber,
       password: form.password,
     });
   };

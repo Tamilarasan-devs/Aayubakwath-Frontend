@@ -5,6 +5,7 @@ import Layout from "../components/layout/Layout";
 import OfferModal from "../components/layout/OfferModel";
 import ErrorBoundary from "../components/common/ErrorBoundary";
 import { AuthProvider } from "../context/AuthContext";
+import CheckoutAuthModal from "../components/auth/CheckoutAuthModal";
 
 /* ─── Scroll to top on route change ─── */
 function ScrollToTop() {
@@ -82,6 +83,7 @@ export default function AppRoutes() {
       <AuthProvider>
         <ScrollToTop />
         <OfferModal />
+        <CheckoutAuthModal />
 
         <ErrorBoundary>
           <Suspense fallback={<PageLoader />}>

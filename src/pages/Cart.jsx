@@ -14,9 +14,11 @@ import CartItem from "./cart/CartItem";
 import CartCoupon from "./cart/CartCoupon";
 import CartSummary from "./cart/CartSummary";
 import EmptyCart from "./cart/EmptyCart";
+import { useAuth } from "../hooks/useAuth";
 
 export default function CartPage() {
   const navigate = useNavigate();
+  const { isAuthenticated, openCheckoutAuthModal } = useAuth();
   const location = useLocation();
   const qc = useQueryClient();
   const [coupon, setCoupon] = useState("");
@@ -131,7 +133,11 @@ export default function CartPage() {
     } else {
       localStorage.removeItem("applied_coupon_code");
     }
-    navigate("/checkout");
+    if (!isAuthenticated) {
+      openCheckoutAuthModal();
+    } else {
+      navigate("/checkout");
+    }
   };
 
   if (isLoading) {

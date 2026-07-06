@@ -2,6 +2,7 @@ import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { FaShoppingCart } from "react-icons/fa";
+import { useAuth } from "../../../hooks/useAuth";
 
 const formatCurrency = (value) =>
   `₹${Math.round(Number(value) || 0).toLocaleString("en-IN")}`;
@@ -15,6 +16,7 @@ export default function CartPopup({
   subtotal,
   navigate,
 }) {
+  const { openCheckoutAuthModal } = useAuth();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -144,8 +146,12 @@ export default function CartPopup({
                       </button>
                       <button
                         onClick={() => {
-                          onClose();
-                          navigate("/checkout");
+                          if (!isAuthenticated) {
+                            openCheckoutAuthModal();
+                          } else {
+                            onClose();
+                            navigate("/checkout");
+                          }
                         }}
                         className="flex-1 rounded-full bg-black px-5 py-3 text-[12px] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#1f1f1f]"
                       >

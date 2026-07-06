@@ -14,15 +14,18 @@ import { useAuth } from "../hooks/useAuth";
 export default function Checkout() {
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, openCheckoutAuthModal } = useAuth();
   const [step] = useState(0);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.error("Please login first.");
-      navigate("/login?redirect=/checkout");
+      toast.error("Please login to proceed with checkout.");
+      navigate("/cart");
+      setTimeout(() => {
+        openCheckoutAuthModal();
+      }, 100);
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, openCheckoutAuthModal]);
 
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [newAddress, setNewAddress] = useState("");

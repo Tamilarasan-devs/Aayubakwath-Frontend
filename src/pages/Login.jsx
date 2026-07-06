@@ -63,10 +63,17 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    mutation.mutate({
-      email: form.email,
+    const isPhone = /^\+?\d+$/.test(form.email.trim());
+    const credentials = {
       password: form.password,
-    });
+    };
+    if (isPhone) {
+      credentials.phoneNumber = form.email.trim();
+    } else {
+      credentials.email = form.email.trim();
+    }
+
+    mutation.mutate(credentials);
   };
 
   const loading = mutation.isPending || mutation.isLoading;

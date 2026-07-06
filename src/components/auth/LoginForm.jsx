@@ -8,7 +8,7 @@ export default function LoginForm({ form, showPassword, setShowPassword, handleC
       <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
       <div>
         <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-text-muted)]">
-          Email Address
+          Email Address / Phone Number
         </label>
         <div className="relative group">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9aa28e] transition-colors group-focus-within:text-[var(--color-sage)]">
@@ -26,12 +26,12 @@ export default function LoginForm({ form, showPassword, setShowPassword, handleC
             </svg>
           </span>
           <input
-            type="email"
+            type="text"
             name="email"
             value={form.email}
             onChange={handleChange}
             required
-            placeholder="you@example.com"
+            placeholder="you@example.com or +123..."
             className="inp-field w-full rounded-2xl border border-[#e2decf] bg-[#fbfbf7] py-4 pl-[2.75rem] pr-4 text-[15px] font-medium text-[#11140f]"
           />
         </div>

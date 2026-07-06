@@ -10,6 +10,10 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate()
   const [token, setToken] = useState(() => tokenStore.getToken())
   const [user, setUser] = useState(() => tokenStore.getUser())
+  const [isCheckoutAuthModalOpen, setIsCheckoutAuthModalOpen] = useState(false)
+
+  const openCheckoutAuthModal = useCallback(() => setIsCheckoutAuthModalOpen(true), [])
+  const closeCheckoutAuthModal = useCallback(() => setIsCheckoutAuthModalOpen(false), [])
 
   const login = useCallback(async (tokens, userData = null) => {
     tokenStore.setTokens(tokens.token, tokens.refreshToken)
@@ -65,8 +69,17 @@ export function AuthProvider({ children }) {
   }, [logout, navigate])
 
   const value = useMemo(
-    () => ({ user, token, isAuthenticated: !!token, login, logout }),
-    [user, token, login, logout],
+    () => ({ 
+      user, 
+      token, 
+      isAuthenticated: !!token, 
+      login, 
+      logout,
+      isCheckoutAuthModalOpen,
+      openCheckoutAuthModal,
+      closeCheckoutAuthModal
+    }),
+    [user, token, login, logout, isCheckoutAuthModalOpen, openCheckoutAuthModal, closeCheckoutAuthModal],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

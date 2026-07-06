@@ -491,7 +491,7 @@ const fadeInUp = {
 
 export default function SingleProduct() {
   const { id: productId } = useParams();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, openCheckoutAuthModal } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
 
@@ -649,7 +649,7 @@ export default function SingleProduct() {
       try {
         await addToCart({ productId, quantity: qty, product });
         qc.invalidateQueries({ queryKey: ["cart"] });
-        navigate("/login?redirect=/checkout");
+        openCheckoutAuthModal();
       } catch (err) {
         toast.error("Failed to add to cart.");
       }
