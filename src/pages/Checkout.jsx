@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getProfile, addAddress } from "../services/userService";
 import { getCart } from "../services/cartService";
-import { createOrder } from "../services/orderService";
+import { createOrder, verifyPayment } from "../services/orderService";
 import CheckoutSteps from "./checkout/CheckoutSteps";
 import AddressSelector from "./checkout/AddressSelector";
 import NewAddressForm from "./checkout/NewAddressForm";
@@ -29,6 +29,7 @@ export default function Checkout() {
 
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [newAddress, setNewAddress] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("ONLINE");
 
   const { data: userProfile, isLoading: isUserLoading } = useQuery({
     queryKey: ["profile"],
@@ -41,16 +42,72 @@ export default function Checkout() {
     queryFn: getCart,
   });
 
+  const handleSuccess = () => {
+    qc.invalidateQueries({ queryKey: ["cart"] });
+    qc.invalidateQueries({ queryKey: ["orders"] });
+    localStorage.removeItem("applied_coupon_code");
+    toast.success("Order placed successfully!");
+    navigate("/profile");
+  };
+
   const orderMut = useMutation({
     mutationFn: createOrder,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["cart"] });
-      qc.invalidateQueries({ queryKey: ["orders"] });
-      localStorage.removeItem("applied_coupon_code");
-      toast.success("Order placed successfully!");
-      navigate("/profile");
+    onSuccess: (res) => {
+      const order = res?.data;  // backend wraps in { data: order }
+      if (order?.razorpayOrderId) {
+        // Online payment — launch Razorpay popup
+        if (!window.Razorpay) {
+          toast.error("Payment gateway failed to load. Please refresh and try again.");
+          return;
+        }
+        const options = {
+          key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_TEq2YcknyFvIQL",
+          amount: Math.round(Number(order.totalAmount) * 100),
+          currency: "INR",
+          name: "Depollu",
+          description: "Order Payment",
+          order_id: order.razorpayOrderId,
+          handler: async (response) => {
+            try {
+              await verifyPayment({
+                orderId: order.id,
+                razorpayOrderId: response.razorpay_order_id,
+                paymentId: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+              });
+              handleSuccess();
+            } catch (err) {
+              console.error("Payment verification error:", err);
+              toast.error(err?.response?.data?.message || "Payment verification failed. Please contact support.");
+            }
+          },
+          prefill: {
+            name: userProfile?.name || "",
+            email: userProfile?.email || "",
+            contact: userProfile?.phoneNumber || "",
+          },
+          theme: {
+            color: "#6b8e6b",
+          },
+          modal: {
+            ondismiss: () => {
+              toast.info("Payment cancelled. Your order is saved — you can retry payment from your profile.");
+            },
+          },
+        };
+        const rzp = new window.Razorpay(options);
+        rzp.on("payment.failed", function (response) {
+          console.error("Razorpay payment failed:", response.error);
+          toast.error(`Payment failed: ${response.error?.description || "Please try again."}`);
+        });
+        rzp.open();
+      } else {
+        // COD — order is confirmed
+        handleSuccess();
+      }
     },
     onError: (err) => {
+      console.error("Order creation error:", err);
       toast.error(err.response?.data?.message || "Failed to place order.");
     },
   });
@@ -142,7 +199,7 @@ export default function Checkout() {
     }
 
     const couponCode = localStorage.getItem("applied_coupon_code") || undefined;
-    orderMut.mutate({ shippingAddress, couponCode });
+    orderMut.mutate({ shippingAddress, couponCode, paymentMethod });
   };
 
   return (
@@ -198,12 +255,63 @@ export default function Checkout() {
               isSaving={addressMut.isPending}
               hasAddresses={addresses.length > 0}
             />
+
+            <div className="mt-8 border-t border-[var(--color-border)] pt-8">
+              <h2
+                className="display-heading text-[var(--color-text)] mb-6"
+                style={{ fontSize: "1.6rem" }}
+              >
+                Payment Method
+              </h2>
+              <div className="space-y-4">
+                <label
+                  className={`flex items-center p-4 border rounded-[var(--radius-md)] cursor-pointer transition-all ${
+                    paymentMethod === "ONLINE"
+                      ? "border-[var(--color-sage)] bg-[var(--color-sage-light)]/10"
+                      : "border-[var(--color-border)] hover:border-[var(--color-sage)]/50"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="ONLINE"
+                    checked={paymentMethod === "ONLINE"}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="w-4 h-4 text-[var(--color-sage)] focus:ring-[var(--color-sage)] cursor-pointer"
+                  />
+                  <span className="ml-3 font-medium text-[var(--color-text)]">
+                    Pay Online (Razorpay)
+                  </span>
+                </label>
+
+                <label
+                  className={`flex items-center p-4 border rounded-[var(--radius-md)] cursor-pointer transition-all ${
+                    paymentMethod === "COD"
+                      ? "border-[var(--color-sage)] bg-[var(--color-sage-light)]/10"
+                      : "border-[var(--color-border)] hover:border-[var(--color-sage)]/50"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="COD"
+                    checked={paymentMethod === "COD"}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="w-4 h-4 text-[var(--color-sage)] focus:ring-[var(--color-sage)] cursor-pointer"
+                  />
+                  <span className="ml-3 font-medium text-[var(--color-text)]">
+                    Cash on Delivery
+                  </span>
+                </label>
+              </div>
+            </div>
           </div>
 
           <OrderSummary
             cartItems={cartItems}
             subtotal={subtotal}
             shipping={shipping}
+            paymentMethod={paymentMethod}
             onPlaceOrder={handlePlaceOrder}
             isPending={orderMut.isPending}
           />

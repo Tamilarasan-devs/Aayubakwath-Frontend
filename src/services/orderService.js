@@ -2,7 +2,12 @@ import axiosInstance from "../utils/axiosInstance"
 
 export const createOrder = async (orderData) => {
   const { data } = await axiosInstance.post("/orders", orderData)
-  return data.data
+  return data
+}
+
+export const verifyPayment = async (paymentData) => {
+  const { data } = await axiosInstance.post("/orders/verify-payment", paymentData)
+  return data
 }
 
 export const getMyOrders = async (page = 1, limit = 10) => {

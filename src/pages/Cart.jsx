@@ -39,7 +39,25 @@ export default function CartPage() {
 
   const removeMut = useMutation({
     mutationFn: removeFromCart,
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["cart"] }),
+    onMutate: async (productId) => {
+      // Cancel any outgoing refetches
+      await qc.cancelQueries({ queryKey: ["cart"] });
+      // Snapshot previous value
+      const previous = qc.getQueryData(["cart"]);
+      // Optimistically remove item immediately
+      qc.setQueryData(["cart"], (old) => {
+        if (!old?.data) return old;
+        return { ...old, data: old.data.filter((i) => i.productId !== productId) };
+      });
+      return { previous };
+    },
+    onError: (_err, _productId, context) => {
+      // Roll back on failure
+      if (context?.previous) qc.setQueryData(["cart"], context.previous);
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["cart"] });
+    },
   });
 
   const couponMut = useMutation({
@@ -116,9 +134,7 @@ export default function CartPage() {
   };
  
   const removeItem = (productId) => {
-    setRemovingId(productId);
     removeMut.mutate(productId);
-    setTimeout(() => setRemovingId(null), 400);
   };
 
   const onApplyCoupon = () => {

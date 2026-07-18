@@ -3,7 +3,7 @@ import { applyCoupon } from "../../services/couponService";
 import { toast } from "react-toastify";
 import { Tag, X, CheckCircle2, Loader2 } from "lucide-react";
 
-export default function OrderSummary({ cartItems, subtotal, shipping, onPlaceOrder, isPending }) {
+export default function OrderSummary({ cartItems, subtotal, shipping, paymentMethod, onPlaceOrder, isPending }) {
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -216,7 +216,7 @@ export default function OrderSummary({ cartItems, subtotal, shipping, onPlaceOrd
         >
           {isPending
             ? "Processing..."
-            : "Place Order (Cash on Delivery)"}
+            : paymentMethod === "ONLINE" ? "Place Order & Pay Online" : "Place Order (Cash on Delivery)"}
         </button>
       </div>
     </div>

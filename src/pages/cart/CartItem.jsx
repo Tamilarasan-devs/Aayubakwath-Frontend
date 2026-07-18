@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Trash2 } from "lucide-react";
 
 const badgeMap = {
@@ -13,6 +13,8 @@ const badgeMap = {
 };
 
 export default function CartItem({ item, onUpdateQty, onRemove, isRemoving }) {
+  const [confirmRemove, setConfirmRemove] = useState(false);
+
   return (
     <motion.div
       key={item.id}
@@ -52,15 +54,50 @@ export default function CartItem({ item, onUpdateQty, onRemove, isRemoving }) {
               {item.category}
             </p>
           </div>
+
           <button
-            onClick={() => onRemove(item.productId)}
+            onClick={() => setConfirmRemove(true)}
             className="shrink-0 text-[var(--color-text-muted)] hover:text-[var(--color-terracotta)] transition-colors p-1.5 rounded-md hover:bg-[var(--color-error-bg)]"
             aria-label="Remove item"
           >
             <Trash2 size={14} />
           </button>
         </div>
- 
+
+        {/* Inline Remove Confirmation */}
+        <AnimatePresence>
+          {confirmRemove && (
+            <motion.div
+              initial={{ opacity: 0, y: -6, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -6, scale: 0.97 }}
+              transition={{ duration: 0.18 }}
+              className="mt-3 flex items-center gap-3 bg-red-50 border border-red-200 rounded-lg px-4 py-3"
+            >
+              <p className="font-body text-[13px] text-red-700 font-medium flex-1">
+                Remove <span className="font-semibold">"{item.name}"</span> from cart?
+              </p>
+              <div className="flex gap-2 shrink-0">
+                <button
+                  onClick={() => setConfirmRemove(false)}
+                  className="font-body text-[12px] font-medium text-[var(--color-text-muted)] px-3 py-1.5 rounded-md border border-[var(--color-border)] bg-white hover:bg-[var(--color-bg-soft)] transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    setConfirmRemove(false);
+                    onRemove(item.productId);
+                  }}
+                  className="font-body text-[12px] font-semibold text-white px-3 py-1.5 rounded-md bg-red-500 hover:bg-red-600 transition-colors"
+                >
+                  Remove
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {item.tags?.length > 0 && (
           <div className="flex gap-1.5 flex-wrap mt-2">
             {item.tags.map((t) => (
