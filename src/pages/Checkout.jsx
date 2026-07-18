@@ -64,7 +64,7 @@ export default function Checkout() {
           key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_TEq2YcknyFvIQL",
           amount: Math.round(Number(order.totalAmount) * 100),
           currency: "INR",
-          name: "Depollu",
+          name: "Aayubakwath",
           description: "Order Payment",
           order_id: order.razorpayOrderId,
           handler: async (response) => {
