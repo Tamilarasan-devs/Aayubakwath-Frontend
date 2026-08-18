@@ -926,31 +926,6 @@ export default function SingleProduct() {
          ═══════════════════════════════════════════════════════════ */}
       <div className="mt-10">
 
-        <ProductTabs
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          TABS={TABS}
-          fadeInUp={fadeInUp}
-          product={product}
-          productContent={productContent}
-          activeImageUrl={activeImageUrl}
-          benefits={benefits}
-          warnings={warnings}
-          howToUse={howToUse}
-          ingredients={ingredients}
-          ingredientCards={ingredientCards}
-          getMatchingIngredientPill={getMatchingIngredientPill}
-          showSelectedIngredient={showSelectedIngredient}
-          selectedIngredientCards={selectedIngredientCards}
-          previewIngredientPill={previewIngredientPill}
-          activeIngredientPill={activeIngredientPill}
-          setActiveIngredientPill={setActiveIngredientPill}
-          setHoveredIngredientPill={setHoveredIngredientPill}
-          setShowIngredientModal={setShowIngredientModal}
-          showIngredientModal={showIngredientModal}
-        />
-      </div>
-
       {/* ═══════════════════════════════════════════════════════════
           BRAND PROMISE SECTION
          ═══════════════════════════════════════════════════════════ */}
@@ -1003,6 +978,31 @@ export default function SingleProduct() {
           </div>
         </div>
       </motion.div>
+        <ProductTabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          TABS={TABS}
+          fadeInUp={fadeInUp}
+          product={product}
+          productContent={productContent}
+          activeImageUrl={activeImageUrl}
+          benefits={benefits}
+          warnings={warnings}
+          howToUse={howToUse}
+          ingredients={ingredients}
+          ingredientCards={ingredientCards}
+          getMatchingIngredientPill={getMatchingIngredientPill}
+          showSelectedIngredient={showSelectedIngredient}
+          selectedIngredientCards={selectedIngredientCards}
+          previewIngredientPill={previewIngredientPill}
+          activeIngredientPill={activeIngredientPill}
+          setActiveIngredientPill={setActiveIngredientPill}
+          setHoveredIngredientPill={setHoveredIngredientPill}
+          setShowIngredientModal={setShowIngredientModal}
+          showIngredientModal={showIngredientModal}
+        />
+      </div>
+
 
       {/* ═══════════════════════════════════════════════════════════
           RELATED PRODUCTS
@@ -1014,7 +1014,7 @@ export default function SingleProduct() {
         <RelatedProduct />
       </motion.div>
 
-      <FAQ productName={product.productName} />
+      <FAQ product={product} productName={product.productName} />
 
       {/* ═══════════════════════════════════════════════════════════
           STICKY BOTTOM BAR (mobile)

@@ -136,20 +136,23 @@ export default function ProductTabs({
     <div className="max-w-[1400px] mx-auto px-3 lg:px-4 pt-0 pb-10 lg:pb-12">
       <motion.div {...fadeInUp}>
         {/* Tab headers */}
-        <div className="flex w-full gap-0 border-b border-[var(--color-border)] mb-8 overflow-x-auto scrollbar-none sm:overflow-x-visible">
-          {TABS.map(({ id, label, Icon }) => (
-            <button
-              key={id}
-              onClick={() => setActiveTab(id)}
-              className={`min-w-max flex items-center justify-center gap-2 px-5 py-4 text-center text-sm tracking-[0.1em] uppercase whitespace-nowrap transition-all border-b-2 -mb-px font-semibold sm:min-w-0 sm:flex-1 sm:px-3 ${activeTab === id
-                ? "border-[var(--color-sage)] text-[var(--color-text)]"
-                : "border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-sage)]"
+        <div className="w-full bg-[var(--color-bg-soft)] p-2 rounded-2xl border border-[var(--color-border)] shadow-sm mb-8">
+          <div className="flex w-full gap-1.5 overflow-x-auto scrollbar-none sm:overflow-x-visible">
+            {TABS.map(({ id, label, Icon }) => (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id)}
+                className={`min-w-max flex-1 flex items-center justify-center gap-2.5 px-4 py-3 sm:px-5 sm:py-3.5 rounded-xl text-center text-sm sm:text-base tracking-wider uppercase whitespace-nowrap transition-all duration-300 sm:min-w-0 ${
+                  activeTab === id
+                    ? "bg-white text-[var(--color-sage-dark,#4e5f0d)] shadow-md border-2 border-[var(--color-sage)] font-bold scale-[1.01]"
+                    : "text-[var(--color-text-secondary)] hover:text-[var(--color-sage)] hover:bg-white/80 font-semibold border border-transparent"
                 }`}
-            >
-              <Icon size={14} />
-              {label}
-            </button>
-          ))}
+              >
+                <Icon size={18} className={activeTab === id ? "text-[var(--color-sage)] shrink-0" : "shrink-0"} />
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Tab content */}
@@ -207,10 +210,10 @@ export default function ProductTabs({
                               <span className="text-lg">{b.icon}</span>
                             </div>
                             <div className="min-w-0">
-                              <span className="block text-base tracking-wide text-[var(--color-text)] mb-1 font-semibold transition-colors duration-500 group-hover:text-[var(--color-sage)]">
+                              <span className="block text-base sm:text-lg tracking-tight text-gray-900 mb-1 font-semibold transition-colors duration-500 group-hover:text-[var(--color-sage)]">
                                 {b.key}
                               </span>
-                              <span className="text-base text-[var(--color-text-secondary)] leading-relaxed font-medium">
+                              <span className="text-xs sm:text-sm text-gray-500 leading-relaxed font-normal">
                                 {b.val}
                               </span>
                             </div>
@@ -359,10 +362,10 @@ export default function ProductTabs({
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <h3 className="text-[15px] font-semibold text-[var(--color-text)] mb-1 leading-snug">
+                          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 leading-snug">
                             {name}
                           </h3>
-                          <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                          <p className="text-xs sm:text-sm text-gray-500 leading-relaxed font-normal">
                             {desc}
                           </p>
                         </motion.button>
@@ -494,10 +497,10 @@ export default function ProductTabs({
                         )}
                       </div> */}
 
-                        <h4 className="mb-2 text-[18px] font-semibold text-[var(--color-text)] transition-colors duration-500 group-hover:text-[var(--color-sage)]">
+                        <h4 className="mb-1 text-base sm:text-lg font-semibold text-gray-900 transition-colors duration-500 group-hover:text-[var(--color-sage)]">
                           {row.key}
                         </h4>
-                        <p className="text-[15px] leading-relaxed text-[var(--color-text-secondary)] font-medium">
+                        <p className="text-xs sm:text-sm leading-relaxed text-gray-500 font-normal">
                           {row.val}
                         </p>
                       </motion.div>
@@ -528,16 +531,16 @@ export default function ProductTabs({
                 </div>
 
                 <div className="lg:col-span-7">
-                  <h3 className="mb-3 w-full text-[22px] font-semibold leading-[1.35] text-[var(--color-text)]">
+                  <h3 className="mb-2 w-full text-xl sm:text-2xl font-bold leading-[1.3] text-gray-900">
                     How to use this supplement effectively
                   </h3>
-                  <p className="mb-6 max-w-[860px] text-[15px] leading-relaxed text-[var(--color-text-secondary)] font-medium">
+                  <p className="mb-5 max-w-[860px] text-xs sm:text-sm leading-relaxed text-gray-500 font-normal">
                     Follow these steps consistently for best results. Each step
                     is designed to improve absorption, routine adherence, and
                     overall product effectiveness.
                   </p>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3.5">
                     {howToUse.map((item, idx) => {
                       const Icon = pickHowToUseIcon(item, idx);
 
@@ -547,24 +550,24 @@ export default function ProductTabs({
                           initial={{ opacity: 0, y: 14 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: idx * 0.07 }}
-                          className="group relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-[var(--color-sage)] hover:shadow-2xl hover:shadow-[rgba(130,155,28,0.12)]"
+                          className="group relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white p-4.5 sm:p-5 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-[var(--color-sage)] hover:shadow-2xl hover:shadow-[rgba(130,155,28,0.12)]"
                         >
                           <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl bg-gradient-to-r from-[var(--color-sage)] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                          <div className="grid grid-cols-[44px_1fr] items-start gap-4">
-                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--color-sage-light)] text-[var(--color-sage)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:bg-[var(--color-sage)] group-hover:text-white">
+                          <div className="grid grid-cols-[42px_1fr] items-start gap-3.5">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-sage-light)] text-[var(--color-sage)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:bg-[var(--color-sage)] group-hover:text-white">
                               <Icon size={18} aria-hidden="true" />
                             </div>
                             <div className="min-w-0">
                               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
-                                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">
+                                {/* <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-sage)]">
                                   Step {String(item.step).padStart(2, "0")}
-                                </span>
-                                <span className="block text-base tracking-wide text-[var(--color-text)] font-semibold transition-colors duration-500 group-hover:text-[var(--color-sage)]">
+                                </span> */}
+                                <span className="block text-base sm:text-lg tracking-tight text-gray-900 font-semibold transition-colors duration-500 group-hover:text-[var(--color-sage)]">
                                   {item.title}
                                 </span>
                               </div>
                               {String(item.desc || "").trim() ? (
-                                <p className="text-base text-[var(--color-text-secondary)] leading-relaxed font-medium">
+                                <p className="text-xs sm:text-sm text-gray-500 leading-relaxed font-normal">
                                   {item.desc}
                                 </p>
                               ) : null}

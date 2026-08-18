@@ -192,9 +192,9 @@ export default function Home() {
             </div>
           </div>
 
-          <LazySection minHeight={300}>
+          {/* <LazySection minHeight={300}>
             <ClientReview />
-          </LazySection>
+          </LazySection> */}
           <div className="mt-8">
             <LazySection minHeight={150}>
               <Certificate />

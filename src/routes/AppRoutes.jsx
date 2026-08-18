@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Layout from "../components/layout/Layout";
 import OfferModal from "../components/layout/OfferModel";
+import ConsultationModal from "../components/layout/ConsultationModal";
 import ErrorBoundary from "../components/common/ErrorBoundary";
 import { AuthProvider } from "../context/AuthContext";
 import CheckoutAuthModal from "../components/auth/CheckoutAuthModal";
@@ -83,6 +84,7 @@ export default function AppRoutes() {
       <AuthProvider>
         <ScrollToTop />
         <OfferModal />
+        <ConsultationModal />
         <CheckoutAuthModal />
 
         <ErrorBoundary>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
+import { resolveProductImageKey } from "../../data/productImageCatalog";
 
 const faqs = [
   {
@@ -89,7 +90,7 @@ It is generally best taken in the morning for optimal energy support.`,
   },
 ];
 
-export default function FAQ({ productName }) {
+export default function FAQ({ product, productName }) {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleFAQ = (index) => {
@@ -99,23 +100,51 @@ export default function FAQ({ productName }) {
   let displayItems = [];
   let headerTitle = "Frequently Asked Questions";
 
-  if (productName) {
-    const matchedCategory = faqs.find((f) => f.question === productName);
-    if (matchedCategory) {
-      headerTitle = `${matchedCategory.question} FAQs`;
-      displayItems = matchedCategory.answer.split("\n\n").map((block) => {
-        const lines = block.split("\n");
+  const key = product ? resolveProductImageKey(product) : null;
+  const keyToCategoryName = {
+    cholesterol: "Blood Cholesterol Balance",
+    bloodSugar: "Blood Sugar",
+    brain: "Brain Tonic",
+    vitality: "Vitality Power Plus",
+    generalHealth: "General Health",
+  };
+
+  const targetCategoryName = keyToCategoryName[key] || productName || "";
+
+  let matchedCategory = faqs.find((f) => f.question === targetCategoryName);
+
+  if (!matchedCategory && targetCategoryName) {
+    const normTarget = targetCategoryName.toLowerCase().trim();
+    matchedCategory = faqs.find((f) => {
+      const qLower = f.question.toLowerCase().trim();
+      if (qLower === normTarget) return true;
+      if (normTarget.includes("sugar") && f.question === "Blood Sugar") return true;
+      if (normTarget.includes("cholesterol") && f.question === "Blood Cholesterol Balance") return true;
+      if (normTarget.includes("brain") && f.question === "Brain Tonic") return true;
+      if (normTarget.includes("vitality") && f.question === "Vitality Power Plus") return true;
+      if (normTarget.includes("general") && f.question === "General Health") return true;
+      return false;
+    });
+  }
+
+  // Fallback to General Health category if no specific product match is found
+  if (!matchedCategory) {
+    matchedCategory = faqs.find((f) => f.question === "General Health") || faqs[0];
+  }
+
+  if (matchedCategory) {
+    headerTitle = `${matchedCategory.question} FAQs`;
+    displayItems = matchedCategory.answer
+      .split("\n\n")
+      .map((block) => {
+        const lines = block.split("\n").map((l) => l.trim()).filter(Boolean);
+        if (lines.length === 0) return null;
         return {
           question: lines[0],
           answer: lines.slice(1).join("\n"),
         };
-      });
-    }
-  }
-
-  // Fallback to plotting out all default FAQ headers if no product match is found
-  if (displayItems.length === 0) {
-    displayItems = faqs;
+      })
+      .filter(Boolean);
   }
 
   return (
